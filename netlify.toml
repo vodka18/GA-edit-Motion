@@ -4,3 +4,7 @@
   base = ""
   publish = "."
   command = "echo 'Static site, nothing to build'"
+
+[build.environment]
+  # Not a Next.js app: skip the auto-installed Next.js runtime plugin.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
