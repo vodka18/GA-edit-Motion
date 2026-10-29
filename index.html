@@ -578,6 +578,14 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
 [dir=rtl] .hl3 .l1{font:500 17px/1.6 Cairo,sans-serif;letter-spacing:0}
 [dir=rtl] .hl3 .l2{font:700 clamp(21px,2.1vw,27px)/1.7 Amiri,serif;letter-spacing:0}
 [dir=rtl] .hl3 .l3{font:400 17px Amiri,serif;letter-spacing:0}[dir=rtl] .hl3 .l3 em{margin:0}
+/* full effects on laptops/desktops (html.rich); phones keep the light versions above */
+html.rich .pre{filter:blur(10px)}
+html.rich [data-reveal],html.rich .item{transition:opacity .9s var(--eo),transform .9s var(--eo),filter .9s}
+html.rich .item .dur{background:rgba(0,0,0,.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+html.rich .tabs{background:linear-gradient(180deg,rgba(7,6,10,.92) 70%,rgba(7,6,10,0));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+html.rich #tabsBg{background:linear-gradient(180deg,rgba(7,6,10,.95) calc(100% - 16px),rgba(7,6,10,0));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html.rich .totop{background:rgba(18,17,22,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+html.rich .skip{background:rgba(14,13,16,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -730,6 +738,8 @@ const $=s=>document.getElementById(s);
 const root=document.documentElement;
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fine=matchMedia('(pointer: fine)').matches;
+/* laptops and desktops get the full effects (blur reveals, frosted glass, the whole video wall); phones and tablets get the light version */
+const rich=fine&&!reduce&&innerWidth>=900;root.classList.toggle('rich',rich);
 const N=149,FPS=8,T=(N-1)/FPS;
 const pad=n=>String(n).padStart(2,'0');
 const tcode=t=>`00:00:${pad(Math.floor(t))}:${pad(Math.floor((t%1)*30))}`;
@@ -974,17 +984,17 @@ const vio='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEa
  if(!e.isIntersecting){v.pause();v.closest('.item')?.classList.remove('live')}}),{threshold:.3}):null;
 const wallVids=[...document.querySelectorAll('.wall video')];wallVids.forEach(v=>v._wall=true);
 const gridVids=[...document.querySelectorAll('.item video')],allVids=[...wallVids,...gridVids];let lastPick=0;
-/* only the few videos nearest the middle of the screen load and play (phone 2 + 3 in the hero, laptop 4 + 6);
+/* only the few videos nearest the middle of the screen load and play (phone 2 + 3 in the hero, laptop 4 + the whole wall);
    the rest show their cover, and videos load only after 0.2 s near the middle (not while flicking past), and any video that stops playing is released after 3 s so memory stays low */
 function closestVids(list,n){const mid=innerHeight/2,cx=innerWidth/2,vis=list.filter(v=>v._vis);
  vis.forEach(v=>{const r=v.getBoundingClientRect();v._d=Math.abs(r.top+r.height/2-mid)+Math.abs(r.left+r.width/2-cx)*.25-(v.src?innerHeight*.25:0)});vis.sort((a,b)=>a._d-b._d);return vis.slice(0,n)}
 function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick=now;const ph=innerWidth<640;
- const on=new Set([...closestVids(gridVids,ph?2:4),...(scrollY<L.heroB?closestVids(wallVids,ph?3:6):[])]);
+ const on=new Set([...closestVids(gridVids,ph?2:4),...(scrollY<L.heroB?closestVids(wallVids,ph?3:rich?12:6):[])]);
  for(const v of allVids){const it=v._wall?null:v.closest('.item');
-  if(on.has(v)){v._off=0;if(!v.src){if(!v._sel){v._sel=now;continue}if(now-v._sel<200)continue;arm(v)}
+  if(on.has(v)){v._off=0;if(!v.src){if(!rich){if(!v._sel){v._sel=now;continue}if(now-v._sel<200)continue}arm(v)}
    if(v.paused){const p=v.play();if(p)p.catch(()=>{})}if(it)it.classList.add('live')}
   else{v._sel=0;if(!v.paused)v.pause();if(it)it.classList.remove('live');
-   if(v.src){if(!v._off)v._off=now;else if(now-v._off>3000){v.removeAttribute('src');v.load();v._off=0}}}}}
+   if(v.src){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:3000)){v.removeAttribute('src');v.load();v._off=0}}}}}
 document.querySelectorAll('.item video,.wall video').forEach(v=>vio?vio.observe(v):arm(v));
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;const c=b.dataset.cat;
  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
