@@ -132,8 +132,8 @@ h2{font-size:clamp(38px,6.4vw,80px);line-height:.98;margin:14px 0 18px}
 .sec{padding-block:110px 28px;position:relative}
 
 /* reveal (only for things below the fold at load) */
-[data-reveal],.item{transition:opacity .9s var(--eo),transform .9s var(--eo),filter .9s}
-.pre{opacity:0;transform:translateY(46px) scale(.97);filter:blur(10px)}
+[data-reveal],.item{transition:opacity .9s var(--eo),transform .9s var(--eo)}
+.pre{opacity:0;transform:translateY(46px) scale(.97)}
 
 /* divider: a ruler with a sweeping playhead */
 .divider .wrap{padding-block:10px}
@@ -178,7 +178,7 @@ h2{font-size:clamp(38px,6.4vw,80px);line-height:.98;margin:14px 0 18px}
 .monitor{width:min(calc(100% - 32px),980px,calc((100svh - 480px) * 16 / 9));min-width:min(calc(100% - 32px),320px)}
 .screen{position:relative;margin:var(--sm,10px) var(--sm,10px) 0;aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden;border-radius:3px}
 .screen canvas{display:block;width:100%;height:100%;object-fit:cover}
-.screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(0,0,0,.06) 50%) 0 0/100% 3px;mix-blend-mode:multiply}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(0,0,0,.06) 50%) 0 0/100% 3px}
 .mbar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px 10px}
 .tc{font:700 clamp(14px,1.8vw,19px) var(--display);color:var(--tc);font-variant-numeric:tabular-nums;letter-spacing:.02em;text-shadow:0 0 12px rgba(74,163,255,.5)}
 .fit{font:600 12px var(--display);color:#d7d7de}
@@ -268,7 +268,7 @@ h2{font-size:clamp(38px,6.4vw,80px);line-height:.98;margin:14px 0 18px}
 .item:hover video{transform:scale(1.05)}
 .item .vid::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.22),transparent 60%);opacity:0;transition:opacity .3s}
 .item:hover .vid::before{opacity:1}
-.item .dur{position:absolute;z-index:2;right:8px;top:8px;font:700 11px var(--display);background:rgba(0,0,0,.65);color:#fff;border-radius:4px;padding:3px 6px;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}
+.item .dur{position:absolute;z-index:2;right:8px;top:8px;font:700 11px var(--display);background:rgba(0,0,0,.65);color:#fff;border-radius:4px;padding:3px 6px;font-variant-numeric:tabular-nums;background:rgba(0,0,0,.72)}
 .item .go{position:absolute;z-index:2;left:8px;bottom:8px;font:800 11px var(--display);letter-spacing:.05em;text-transform:uppercase;background:var(--cc);color:#120d05;border-radius:999px;padding:6px 11px;box-shadow:0 0 20px var(--cc);opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s}
 .item:hover .go,.item .vid:focus-visible .go{opacity:1;transform:none}
 .item figcaption{padding:11px 13px 13px;display:flex;flex-direction:column;gap:2px}
@@ -345,7 +345,7 @@ footer .logo{width:34px;height:34px}
 .ac{color:var(--accent);text-shadow:0 0 26px color-mix(in srgb,var(--accent) 40%,transparent)}
 
 /* story controls */
-.skip{position:absolute;right:max(22px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);z-index:5;font:700 12px var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--fg);padding:11px 16px;border-radius:999px;background:rgba(14,13,16,.72);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:opacity .4s,transform .5s var(--eo),border-color .3s,color .3s}
+.skip{position:absolute;right:max(22px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 20px);z-index:5;font:700 12px var(--display);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--fg);padding:11px 16px;border-radius:999px;background:rgba(14,13,16,.92);border:1px solid rgba(255,255,255,.14);transition:opacity .4s,transform .5s var(--eo),border-color .3s,color .3s}
 .skip:hover{border-color:var(--accent);color:var(--accent)}
 .skip.off{opacity:0;pointer-events:none;transform:translateY(10px)}
 @media (min-width:641px){.skip{right:max(82px,calc(env(safe-area-inset-right,0px) + 66px))}}
@@ -408,7 +408,7 @@ footer .logo{width:34px;height:34px}
 .pill .nl::after{content:"";position:absolute;left:50%;bottom:5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);transform:scale(0);transition:transform .35s var(--eo)}
 .pill .nl.on{color:var(--accent)}.pill .nl.on::after{transform:scale(1)}
 .pill .book{padding:12px 16px}
-.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:20;padding-block:10px;margin-block:22px 18px;background:linear-gradient(180deg,rgba(7,6,10,.92) 70%,rgba(7,6,10,0));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);z-index:20;padding-block:10px;margin-block:22px 18px;background:linear-gradient(180deg,rgba(7,6,10,.97) 70%,rgba(7,6,10,0))}
 .tab{min-height:40px}
 @media (min-width:641px){.tabs{gap:5px}.tab{padding:8px 10px;gap:6px;font-size:11px;letter-spacing:.02em}.tab::before{width:7px;height:7px}}
 .showwrap .btn{min-width:220px}
@@ -419,7 +419,7 @@ footer .logo{width:34px;height:34px}
 .copy{display:inline-flex;align-items:center;gap:6px;min-height:36px;transition:border-color .3s,background .3s,color .3s}
 .copy .i{width:14px;height:14px}
 .copy.ok{border-color:var(--green);color:var(--green)}
-.totop{position:fixed;z-index:34;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:var(--fg);background:rgba(18,17,22,.8);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 24px -8px var(--accent);opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .4s,transform .5s var(--eo),border-color .3s}
+.totop{position:fixed;z-index:34;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:var(--fg);background:rgba(18,17,22,.92);border:1px solid rgba(255,255,255,.14);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 24px -8px var(--accent);opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .4s,transform .5s var(--eo),border-color .3s}
 .totop.show{opacity:1;transform:none;pointer-events:auto}
 .totop:hover{border-color:var(--accent)}.totop:hover .i{transform:translateY(-3px)}
 .lb-count{margin-top:6px;font:700 11px var(--display);letter-spacing:.12em;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -546,7 +546,7 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
 [data-sec]:not(.inview) *,[data-sec]:not(.inview)::before,.divider:not(.inview) *,footer:not(.inview) *{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.pre{opacity:1;transform:none;filter:none}}
 /* sticky tabs backdrop: fills the gap under the header while the filter is pinned */
-#tabsBg{position:fixed;left:0;right:0;top:0;height:0;z-index:19;pointer-events:none;opacity:0;transition:opacity .35s;background:linear-gradient(180deg,rgba(7,6,10,.95) calc(100% - 16px),rgba(7,6,10,0));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#tabsBg{position:fixed;left:0;right:0;top:0;height:0;z-index:19;pointer-events:none;opacity:0;transition:opacity .35s;background:linear-gradient(180deg,rgba(7,6,10,.97) calc(100% - 16px),rgba(7,6,10,0))}
 #tabsBg.on{opacity:1}
 /* showreel player */
 .gb.phone>.rplay.rplay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:14px;border:0;padding:0 0 15%;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.72));border-radius:inherit;color:#fff;cursor:pointer;transition:opacity .45s var(--eo),visibility .45s}
@@ -795,7 +795,7 @@ function measure(){
  const lr=$('heroLogo').getBoundingClientRect(),hero=$('top');
  L={top:story.offsetTop,span:Math.max(1,story.offsetHeight-innerHeight),vw,vh,small,big,tA,tw0:Math.min(vw-32,1040),tw1:vw<640?big:big*.8,
     max:Math.max(1,document.documentElement.scrollHeight-innerHeight),logoX:lr.left+lr.width/2,logoY:lr.top+scrollY+lr.height/2,heroB:hero.offsetTop+hero.offsetHeight};
- const bw=Math.round((big-sp)*DPR),bh=Math.round(bw/tA);
+ const bw=Math.min(Math.round((big-sp)*DPR),1280,Math.round(760*tA)),bh=Math.round(bw/tA);/* frames are 832x468: a bigger buffer only costs paint */
  if(cv.width!==bw||cv.height!==bh){cv.width=bw;cv.height=bh}
  dirty=true;lastE=-1;
  document.querySelectorAll('.gb').forEach(g=>g.style.setProperty('--gbs',Math.ceil(Math.hypot(g.offsetWidth,g.offsetHeight)+8)+'px'));
@@ -951,17 +951,24 @@ function applyFilter(c){curCat=c;let n=0;
 showBtn.addEventListener('click',()=>{expanded=true;applyFilter(curCat)});
 applyFilter('all');
 /* preview videos: load + play only while visible; full files loop an 8 s window */
-function arm(v){const t=+v.dataset.t||0;v.src=v.dataset.src+(t?`#t=${t}`:'');
- if(t){v.addEventListener('loadedmetadata',()=>{try{v.currentTime=t}catch(_){}},{once:true});
+function arm(v){const t=+v.dataset.t||0;v.src=v.dataset.src+(t?`#t=${t}`:'');if(v._armed)return;v._armed=1;
+ if(t){v.addEventListener('loadedmetadata',()=>{try{v.currentTime=t}catch(_){}});
   v.addEventListener('timeupdate',()=>{if(v.currentTime>t+8||v.currentTime<t-.5)v.currentTime=t})}}
-const vio='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;v._vis=e.isIntersecting;
- if(e.isIntersecting){if(!v.src)arm(v);if(v._wall&&!reduce&&!lbOpenNow){const p=v.play();if(p)p.catch(()=>{})}}else{v.pause();v.closest('.item')?.classList.remove('live')}}),{threshold:.3}):null;
-document.querySelectorAll('.wall video').forEach(v=>v._wall=true);
-const gridVids=[...document.querySelectorAll('.item video')];let lastPick=0;
-/* only the videos nearest the middle of the screen play: calmer and lighter */
-function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick=now;const N=innerWidth<640?2:4,mid=innerHeight/2;
- const vis=gridVids.filter(v=>v._vis&&v.src);vis.forEach(v=>{const r=v.getBoundingClientRect();v._d=Math.abs(r.top+r.height/2-mid)});vis.sort((a,b)=>a._d-b._d);
- vis.forEach((v,i)=>{const it=v.closest('.item');if(i<N){if(v.paused){const p=v.play();if(p)p.catch(()=>{})}it.classList.add('live')}else{if(!v.paused)v.pause();it.classList.remove('live')}})}
+const vio='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;v._vis=e.isIntersecting;lastPick=0;
+ if(!e.isIntersecting){v.pause();v.closest('.item')?.classList.remove('live')}}),{threshold:.3}):null;
+const wallVids=[...document.querySelectorAll('.wall video')];wallVids.forEach(v=>v._wall=true);
+const gridVids=[...document.querySelectorAll('.item video')],allVids=[...wallVids,...gridVids];let lastPick=0;
+/* only the few videos nearest the middle of the screen load and play (phone 2 + 3 in the hero, laptop 4 + 6);
+   the rest show their cover, and videos load only after 0.2 s near the middle (not while flicking past), and any video that stops playing is released after 3 s so memory stays low */
+function closestVids(list,n){const mid=innerHeight/2,cx=innerWidth/2,vis=list.filter(v=>v._vis);
+ vis.forEach(v=>{const r=v.getBoundingClientRect();v._d=Math.abs(r.top+r.height/2-mid)+Math.abs(r.left+r.width/2-cx)*.25-(v.src?innerHeight*.25:0)});vis.sort((a,b)=>a._d-b._d);return vis.slice(0,n)}
+function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick=now;const ph=innerWidth<640;
+ const on=new Set([...closestVids(gridVids,ph?2:4),...(scrollY<L.heroB?closestVids(wallVids,ph?3:6):[])]);
+ for(const v of allVids){const it=v._wall?null:v.closest('.item');
+  if(on.has(v)){v._off=0;if(!v.src){if(!v._sel){v._sel=now;continue}if(now-v._sel<200)continue;arm(v)}
+   if(v.paused){const p=v.play();if(p)p.catch(()=>{})}if(it)it.classList.add('live')}
+  else{v._sel=0;if(!v.paused)v.pause();if(it)it.classList.remove('live');
+   if(v.src){if(!v._off)v._off=now;else if(now-v._off>3000){v.removeAttribute('src');v.load();v._off=0}}}}}
 document.querySelectorAll('.item video,.wall video').forEach(v=>vio?vio.observe(v):arm(v));
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;const c=b.dataset.cat;
  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
@@ -985,7 +992,7 @@ function lbOpen(w){lastFocus=document.activeElement;lbList=items.filter(it=>!it.
 function lbClose(){if(!lbOpenNow)return;lbOpenNow=false;root.classList.remove('lbopen');lb.classList.remove('open');lbv.pause();root.style.overflow='';
  setTimeout(()=>{if(!lbOpenNow){lb.hidden=true;lbv.removeAttribute('src');lbv.load()}},420);
  if(lastFocus)lastFocus.focus({preventScroll:true});
- if(!reduce)document.querySelectorAll('.wall video').forEach(v=>{if(v._vis&&v.src){const p=v.play();if(p)p.catch(()=>{})}});lastPick=0}
+ lastPick=0}
 document.addEventListener('click',e=>{const a=e.target.closest('a.vid');if(!a)return;const w=bySlug[a.dataset.slug];if(w&&FULL.has(w.slug)){e.preventDefault();lbOpen(w)}});
 lb.addEventListener('click',e=>{if(e.target.closest('[data-close]'))lbClose();else if(e.target.closest('.lb-prev'))lbShow(lbI-1);else if(e.target.closest('.lb-next'))lbShow(lbI+1)});
 addEventListener('keydown',e=>{if(!lbOpenNow)return;if(e.key==='Escape')lbClose();else if(e.key==='ArrowRight')lbShow(lbI+1);else if(e.key==='ArrowLeft')lbShow(lbI-1)});
@@ -1109,7 +1116,7 @@ document.querySelectorAll('a[href="#reel"]').forEach(a=>a.addEventListener('clic
 new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)rSeen=true;else if(rSeen&&!reelV.paused)reelV.pause()}),{threshold:.15}).observe(rph);
 /* ---------- one loop, frame-rate independent (60/120/144 Hz) ---------- */
 const bar=$('progress'),totop=$('totop');let last=performance.now(),lastY=-1,lastP=-1,ttOn=false;
-const damp=(rate,dt)=>1-Math.exp(-rate*dt);
+const damp=(rate,dt)=>1-Math.exp(-rate*dt);let trailCol='#f5b537',trailColT=-1e9;
 function frame(now){
  const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;
  const y=scrollY;
@@ -1124,7 +1131,7 @@ function frame(now){
   cring.style.transform=`translate3d(${tx2.toFixed(1)}px,${ty2.toFixed(1)}px,0) scale(${csc.toFixed(3)})`;
   if(curStyle==='ph'){const f=Math.floor(now/1000*25);$('ctc').textContent=`00:${pad(Math.floor(f/1500)%60)}:${pad(Math.floor(f/25)%60)}:${pad(f%25)}`}
   if(curStyle==='tr'){const lp=trail[trail.length-1];if(!lp||Math.hypot(lp[0]-rx2,lp[1]-ry2)>.5)trail.push([rx2,ry2]);else if(trail.length>1)trail.shift();if(trail.length>16)trail.shift();tctx.clearRect(0,0,trailC.width,trailC.height);
-   const col=getComputedStyle(root).getPropertyValue('--accent').trim()||'#f5b537';tctx.lineCap='round';tctx.lineJoin='round';
+   if(now-trailColT>250){trailCol=getComputedStyle(root).getPropertyValue('--accent').trim()||'#f5b537';trailColT=now}const col=trailCol;tctx.lineCap='round';tctx.lineJoin='round';
    for(let k=2;k<trail.length;k++){const a=k/trail.length,e=a*a;const p0=trail[k-2],p1=trail[k-1],p2=trail[k];
     tctx.strokeStyle=col;tctx.globalAlpha=e*.28;tctx.lineWidth=.6+e*2.2;tctx.shadowColor=col;tctx.shadowBlur=6*e;tctx.beginPath();
     tctx.moveTo((p0[0]+p1[0])/2,(p0[1]+p1[1])/2);tctx.quadraticCurveTo(p1[0],p1[1],(p1[0]+p2[0])/2,(p1[1]+p2[1])/2);tctx.stroke()}
@@ -1141,7 +1148,7 @@ function frame(now){
    rx+=(-ty*14-rx)*kk;ry+=(tx*18-ry)*kk;logo.style.setProperty('--rx',rx.toFixed(2)+'deg');logo.style.setProperty('--ry',ry.toFixed(2)+'deg')}}
  if(y+innerHeight>L.top&&y<L.top+L.span+innerHeight){
   const p=Math.min(1,Math.max(0,(y-L.top)/L.span));
-  shown=reduce?p:shown+(p-shown)*damp(13,dt);if(Math.abs(p-shown)<.00015)shown=p;
+  shown=reduce?p:shown+(p-shown)*damp(fine?13:20,dt);if(Math.abs(p-shown)<.00015)shown=p;
   const f=shown*(N-1),t=f/FPS;
   const e0=Math.min(1,shown/.07),e=Math.round(e0*e0*(3-2*e0)*1000)/1000;
   if(e!==lastE){
