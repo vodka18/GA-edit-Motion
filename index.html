@@ -548,20 +548,6 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
 /* sticky tabs backdrop: fills the gap under the header while the filter is pinned */
 #tabsBg{position:fixed;left:0;right:0;top:0;height:0;z-index:19;pointer-events:none;opacity:0;transition:opacity .35s;background:linear-gradient(180deg,rgba(7,6,10,.97) calc(100% - 16px),rgba(7,6,10,0))}
 #tabsBg.on{opacity:1}
-/* showreel player */
-.gb.phone>.rplay.rplay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:14px;border:0;padding:0 0 15%;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.72));border-radius:inherit;color:#fff;cursor:pointer;transition:opacity .45s var(--eo),visibility .45s}
-.rpc{position:relative;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;background:var(--accent);box-shadow:0 0 44px color-mix(in srgb,var(--accent) 70%,transparent);transition:transform .35s var(--eo)}
-.rpc::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--accent);animation:rping 2.2s var(--eo) infinite}
-@keyframes rping{from{transform:scale(1);opacity:.75}to{transform:scale(1.75);opacity:0}}
-.rplay:hover .rpc{transform:scale(1.08)}.rplay:active .rpc{transform:scale(.94)}
-.rpc svg{width:30px;height:30px;margin-left:4px;fill:#0b0a0c}
-.rpl{font:700 12px var(--display);letter-spacing:.16em;text-transform:uppercase;text-shadow:0 2px 14px rgba(0,0,0,.7)}
-[dir="rtl"] .rpl{letter-spacing:0;font-size:14px}
-.phone.playing>.rplay.rplay{opacity:0;visibility:hidden}
-.phone video{cursor:pointer}
-.gb.phone>.rbar.rbar{position:absolute;left:20px;right:20px;bottom:18px;height:3px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden;z-index:2;opacity:0;transition:opacity .4s;pointer-events:none}
-.phone.started>.rbar.rbar{opacity:1}
-.rbar i{display:block;height:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);box-shadow:0 0 10px var(--accent)}
 /* hero subtitle: categories in Cormorant caps with gold hairlines, "brands across the world" between gold rules */
 .hl3{max-width:none}.hl3>span{display:block}
 .hl3 .l1{font:500 15px/1.5 var(--body);letter-spacing:.02em;color:#bdb8ad}
@@ -598,6 +584,24 @@ html:not(.rich) .item:active{transform:scale(.97);transition-duration:.15s}
 html:not(.rich) .wall video{animation:kbf 14s ease-in-out infinite alternate}
 html:not(.rich) .wall .col:nth-child(2) video{animation-duration:17s;animation-delay:-6s}
 html:not(.rich) .wall .col:nth-child(3) video{animation-duration:19s;animation-delay:-11s}
+/* how it works: the four steps as clips on an edit timeline; a playhead sweeps across and lights each step */
+#reel .reel{grid-template-columns:1fr;max-width:980px;margin-inline:auto}
+.etl{margin-top:30px;padding-bottom:14px;overflow:hidden}
+.etr{position:relative;display:flex;gap:4px;padding:16px 14px 10px;height:64px}
+.ec{flex:var(--w) 1 0;min-width:0;border-radius:6px;background:color-mix(in srgb,var(--c) 70%,#000);border:1px solid var(--c);display:flex;align-items:center;padding:0 10px;overflow:hidden;filter:saturate(.55) brightness(.75);transition:transform .4s var(--eo),box-shadow .4s,filter .4s}
+.ec b{font:700 12px var(--display);color:#fff;white-space:nowrap;letter-spacing:.02em}.ec .sm{display:none}
+.ec.on{filter:none;box-shadow:0 0 22px -2px var(--c);transform:translateY(-2px)}
+.eph{position:absolute;top:6px;bottom:0;left:14px;width:2px;background:#fff;box-shadow:0 0 10px #fff;will-change:transform}
+.eph::before{content:"";position:absolute;top:-6px;left:-6px;border:7px solid transparent;border-top:9px solid var(--accent)}
+.ewave{height:22px;margin:0 14px;border-radius:4px;background:repeating-linear-gradient(90deg,color-mix(in srgb,#2ad1c4 70%,transparent) 0 2px,transparent 2px 5px);-webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);opacity:.55}
+.esteps{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.esteps li{grid-template-columns:1fr;gap:10px;opacity:.4;transition:opacity .4s}.esteps li.on{opacity:1}
+.esteps li::before{width:10px;height:10px}
+[dir=rtl] .esteps{direction:ltr}[dir=rtl] .esteps li{direction:rtl;text-align:right}
+@media (max-width:899px){.esteps{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.ec{padding:0 6px}.ec b{font-size:10.5px}.ec .lg{display:none}.ec .sm{display:inline}}
+@media (max-width:380px){.etr{padding-inline:10px}.ec{flex:1 1 0;padding:0 4px;justify-content:center}.ec b{font-size:9.5px;letter-spacing:0}}
+@media (prefers-reduced-motion:reduce){.esteps li{opacity:1}}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -625,7 +629,7 @@ html:not(.rich) .wall .col:nth-child(3) video{animation-duration:19s;animation-d
       <div>
         <h1 data-i18n="hero_h1"><span class="ln">We make</span><span class="ln">brands <span class="sh">move.</span></span></h1>
         <p class="lede hl3" data-i18n="hero_lede"><span class="l1">Video editing &amp; motion graphics for</span><span class="l2"><span class="g g1"><b>Real Estate</b> <i></i> <b>Hotels</b></span> <span class="g g2"><b>Beauty</b> <i></i> <b>Nightlife</b></span> <span class="g g3"><b>Food</b> <i></i> <b>Health</b> <i></i> <b>Tech</b></span></span><span class="l3"><em>Brands across the world</em></span></p>
-        <div class="acts"><a class="btn g" href="#work"><span data-i18n="hero_see">See the work</span><svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn o" href="#reel"><svg class="i pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l11 6.5-11 6.5z" fill="currentColor" stroke="none"/></svg><span data-i18n="hero_play">Play showreel</span></a></div>
+        <div class="acts"><a class="btn g" href="#work"><span data-i18n="hero_see">See the work</span><svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
     </div>
   </section>
@@ -693,17 +697,18 @@ html:not(.rich) .wall .col:nth-child(3) video{animation-duration:19s;animation-d
   <section class="sec" id="reel" data-sec="reel">
     <div class="wrap reel">
       <div>
-        <div class="chap" data-reveal data-i18n="rl_chap">Showreel</div>
+        <div class="chap" data-reveal data-i18n="rl_chap">How it works</div>
         <h2 data-reveal data-i18n="rl_h2">Every brand.<br><span class="ac">One rhythm.</span></h2>
-        <p class="lede" data-reveal data-i18n="rl_lede">A quick cut through the latest work. Press play with sound on.</p>
-        <ol class="steps">
+        <p class="lede" data-reveal data-i18n="rl_lede">From raw footage to the final cut, in four steps.</p>
+        <div class="etl panel" dir="ltr" aria-hidden="true" data-reveal><div class="ph"><span class="rec"></span>Your Project<span class="tag">4 STEPS</span></div><div class="etr" id="etr"><i class="ec" style="--c:#5b6fd8;--w:20"><b><span class="lg">Footage</span><span class="sm">Footage</span></b></i><i class="ec" style="--c:#e2588f;--w:26"><b><span class="lg">Story</span><span class="sm">Story</span></b></i><i class="ec" style="--c:#f0a52a;--w:32"><b><span class="lg">Motion · Color · Sound</span><span class="sm">Motion</span></b></i><i class="ec" style="--c:#2ad1c4;--w:22"><b><span class="lg">Delivery</span><span class="sm">Delivery</span></b></i><span class="eph" id="eph"></span></div><div class="ewave"></div></div>
+        <ol class="steps esteps">
           <li data-reveal><div><b data-i18n="st0b">Send your footage</b><span data-i18n="st0s">Raw clips, phone videos or just a brief.</span></div></li>
           <li data-reveal><div><b data-i18n="st1b">Cut the story</b><span data-i18n="st1s">A hook in the first second, every cut on the beat.</span></div></li>
           <li data-reveal><div><b data-i18n="st2b">Motion, color &amp; sound</b><span data-i18n="st2s">Titles, grade, glow and sound design.</span></div></li>
           <li data-reveal><div><b data-i18n="st3b">Delivered everywhere</b><span data-i18n="st3s">9:16 for social, 16:9 for screens, your logo on the end card.</span></div></li>
         </ol>
       </div>
-      <div class="phone gb" data-reveal><video id="reelVid" src="showreel.mp4" poster="img/showreel-poster.jpg" playsinline preload="metadata"></video><button class="rplay" id="reelPlay" type="button"><span class="rpc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l11 6.5-11 6.5z"/></svg></span><span class="rpl" data-i18n="hero_play">Play showreel</span></button><div class="rbar" aria-hidden="true"><i id="reelBar"></i></div></div>
+      
     </div>
   </section>
 
@@ -1024,7 +1029,7 @@ function lbShow(i){lbI=(i+lbList.length)%lbList.length;const w=lbList[lbI],col=b
  const cl=lb.querySelector('.cl');cl.textContent=label(w);cl.style.color=col;lb.querySelector('.ti').textContent=w.title;lb.querySelector('.meta').textContent=meta(w);$('lbCount').textContent=`${lbI+1} / ${lbList.length}`;const ep=$('lbEp');ep.hidden=!w.ep;if(w.ep)ep.href=w.ep;
  const pr=lbv.play();if(pr)pr.catch(()=>{})}
 function lbOpen(w){lastFocus=document.activeElement;lbList=items.filter(it=>!it.hidden).map(it=>bySlug[it.dataset.slug]).filter(x=>FULL.has(x.slug));
- lbI=Math.max(0,lbList.indexOf(w));lbOpenNow=true;root.classList.add('lbopen');reelV.pause();document.querySelectorAll('.item video,.wall video').forEach(v=>v.pause());
+ lbI=Math.max(0,lbList.indexOf(w));lbOpenNow=true;root.classList.add('lbopen');document.querySelectorAll('.item video,.wall video').forEach(v=>v.pause());
  lb.hidden=false;root.style.overflow='hidden';requestAnimationFrame(()=>requestAnimationFrame(()=>lb.classList.add('open')));lbShow(lbI);lb.querySelector('.lb-x').focus({preventScroll:true});
  let seen=false;try{seen=localStorage.getItem('ga-swipe')==='1'}catch(_){}if(!fine&&!seen&&lbList.length>1){const h=$('lbHint');h.classList.add('on');setTimeout(()=>h.classList.remove('on'),2600);try{localStorage.setItem('ga-swipe','1')}catch(_){}}}
 function lbClose(){if(!lbOpenNow)return;lbOpenNow=false;root.classList.remove('lbopen');lb.classList.remove('open');lbv.pause();root.style.overflow='';
@@ -1090,7 +1095,7 @@ if(!fine&&!reduce){
 /* ---------- Arabic / English ---------- */
 const KIND_AR={"Villa tour": "جولة في فيلا", "Talking-head reel": "ريل تقديمي", "Product reel": "ريل منتج", "DJ night promo": "إعلان سهرة DJ", "Project reel": "ريل مشروع", "Podcast": "بودكاست", "Podcast highlights": "مقتطفات بودكاست", "Hotel reel": "ريل فندق", "Health explainer": "شرح صحي", "Event film": "فيلم فعالية", "Bartender profile": "بروفايل بارتندر", "Venue reel": "ريل مكان", "Treatment reel": "ريل علاج", "Store story reel": "قصة من المتجر", "Store reel": "ريل متجر", "Speed-ramp edit": "مونتاج سبيد رامب", "Gym reel": "ريل نادٍ رياضي", "Creator collab": "تعاون مع صانعة محتوى", "Awareness campaign": "حملة توعية", "Treatment explainer": "شرح علاج", "Team film": "فيلم الفريق", "Studio reel": "ريل استوديو", "Store promo": "إعلان متجر", "Seaside villa tour": "جولة فيلا على البحر", "SaaS launch film": "فيلم إطلاق منصة", "Restaurant reel": "ريل مطعم", "Resort tour": "جولة في منتجع", "Residential reel": "ريل سكني", "Q&A reel": "أسئلة وأجوبة", "Property tour": "جولة في عقار", "Product promo": "إعلان منتج", "Product animation": "أنيميشن منتج", "Photo reel": "ريل صور", "Menu reel": "ريل قائمة الطعام", "Map animation": "أنيميشن خريطة", "Makeup tutorial": "درس مكياج", "Makeover reel": "ريل تحوّل", "Luxury hotel reel": "ريل فندق فاخر", "Info reel": "ريل معلومات", "Hotel interiors": "ديكور فندق", "Hospitality reel": "ريل ضيافة", "Health tip": "نصيحة صحية", "Guesthouse tour": "جولة في بيت ضيافة", "Explainer reel": "ريل شرح", "Event recap": "ملخّص فعالية", "Event details": "تفاصيل فعالية", "Dessert shop reel": "ريل حلويات", "Customer reel": "ريل زبائن", "Concept edit · before → after": "مونتاج مفهوم · قبل وبعد", "Competition reveal": "إعلان مسابقة", "Commercial listing": "عقار تجاري", "Cocktail launch": "إطلاق كوكتيل", "Class reel": "ريل حصة", "Challenge series": "سلسلة تحدّي", "Challenge reel": "ريل تحدّي", "Brand film": "فيلم براند", "Behind the scenes": "كواليس", "Bar launch film": "فيلم افتتاح بار", "Animated menu": "قائمة متحرّكة"};
 const CATN_AR={realestate:'العقارات',hotels:'الفنادق',beauty:'الجمال',drinks:'المشروبات والسهر',food:'المطاعم والمقاهي',health:'الصحة والرياضة',retail:'التجزئة',saas:'التقنية'};
-const I18N_AR={"nav_brands": "البراندات", "nav_work": "الأعمال", "nav_book": "احجز<span class=\"xs-hide\"> الآن</span>", "hero_h1": "<span class=\"ln\">نجعل علامتك</span><span class=\"ln\"><span class=\"sh\">تتحرّك.</span></span>", "hero_lede": "<span class=\"l1\">مونتاج فيديو وموشن غرافيك لـ</span><span class=\"l2\"><span class=\"g g1\"><b>العقارات</b> <i></i> <b>الفنادق</b></span> <span class=\"g g2\"><b>الجمال</b> <i></i> <b>السهر</b></span> <span class=\"g g3\"><b>المطاعم</b> <i></i> <b>الصحة</b> <i></i> <b>التقنية</b></span></span><span class=\"l3\"><em>علامات تجارية حول العالم</em></span>", "hero_see": "شاهد الأعمال", "hero_play": "شغّل الشوريل", "st_hint": "مرّر لترميمه ↓", "st_want": "تريد مثله لعقارك؟", "book_edit": "احجز المونتاج", "st_skip": "تخطَّ إلى الأعمال ↓", "br_chap": "براندات عملنا معها", "wk_chap": "أعمال مختارة", "wk_we": "نُمنتج لـ", "wk_lede": "ريلز، فعاليات، إطلاقات وبودكاست. اضغط على أي فيديو لتشاهده هنا مع الصوت.", "wk_films": "أفلام وفعاليات", "wk_more": "أعمال أكثر عند الطلب · <a href=\"#book\">احجز المونتاج</a>", "rl_chap": "الشوريل", "rl_h2": "كل براند.<br><span class=\"ac\">إيقاع واحد.</span>", "rl_lede": "لمحة سريعة عن أحدث الأعمال. شغّله مع الصوت.", "st0b": "أرسل لقطاتك", "st0s": "لقطات خام، فيديو من الهاتف أو مجرّد فكرة.", "st1b": "نبني القصة", "st1s": "جذب من الثانية الأولى، وكل قطع على الإيقاع.", "st2b": "موشن، ألوان وصوت", "st2s": "عناوين، تلوين، توهّج وتصميم صوتي.", "st3b": "جاهز لكل منصة", "st3s": "‏9:16 للسوشيال، ‏16:9 للشاشات، وشعارك في النهاية.", "bk_h2": "احجز <span class=\"sh\">المونتاج</span>", "bk_ask": "ماذا تحتاج؟ اختر وستُكتب الرسالة تلقائياً.", "bk_sub": "راسلني أو اتصل · أعمال أكثر عند الطلب", "bk_wa": "راسلني على واتساب", "bk_top": "للأعلى", "lb_hint": "اسحب للفيديو التالي ←", "ft_cats": "عقارات · فنادق · جمال · سهر · مطاعم ومقاهي · صحة · تقنية", "lb_ep": "الحلقة كاملة ↗"};
+const I18N_AR={"nav_brands": "البراندات", "nav_work": "الأعمال", "nav_book": "احجز<span class=\"xs-hide\"> الآن</span>", "hero_h1": "<span class=\"ln\">نجعل علامتك</span><span class=\"ln\"><span class=\"sh\">تتحرّك.</span></span>", "hero_lede": "<span class=\"l1\">مونتاج فيديو وموشن غرافيك لـ</span><span class=\"l2\"><span class=\"g g1\"><b>العقارات</b> <i></i> <b>الفنادق</b></span> <span class=\"g g2\"><b>الجمال</b> <i></i> <b>السهر</b></span> <span class=\"g g3\"><b>المطاعم</b> <i></i> <b>الصحة</b> <i></i> <b>التقنية</b></span></span><span class=\"l3\"><em>علامات تجارية حول العالم</em></span>", "hero_see": "شاهد الأعمال", "st_hint": "مرّر لترميمه ↓", "st_want": "تريد مثله لعقارك؟", "book_edit": "احجز المونتاج", "st_skip": "تخطَّ إلى الأعمال ↓", "br_chap": "براندات عملنا معها", "wk_chap": "أعمال مختارة", "wk_we": "نُمنتج لـ", "wk_lede": "ريلز، فعاليات، إطلاقات وبودكاست. اضغط على أي فيديو لتشاهده هنا مع الصوت.", "wk_films": "أفلام وفعاليات", "wk_more": "أعمال أكثر عند الطلب · <a href=\"#book\">احجز المونتاج</a>", "rl_chap": "كيف نعمل", "rl_h2": "كل براند.<br><span class=\"ac\">إيقاع واحد.</span>", "rl_lede": "من اللقطات الخام إلى النسخة النهائية، بأربع خطوات.", "st0b": "أرسل لقطاتك", "st0s": "لقطات خام، فيديو من الهاتف أو مجرّد فكرة.", "st1b": "نبني القصة", "st1s": "جذب من الثانية الأولى، وكل قطع على الإيقاع.", "st2b": "موشن، ألوان وصوت", "st2s": "عناوين، تلوين، توهّج وتصميم صوتي.", "st3b": "جاهز لكل منصة", "st3s": "‏9:16 للسوشيال، ‏16:9 للشاشات، وشعارك في النهاية.", "bk_h2": "احجز <span class=\"sh\">المونتاج</span>", "bk_ask": "ماذا تحتاج؟ اختر وستُكتب الرسالة تلقائياً.", "bk_sub": "راسلني أو اتصل · أعمال أكثر عند الطلب", "bk_wa": "راسلني على واتساب", "bk_top": "للأعلى", "lb_hint": "اسحب للفيديو التالي ←", "ft_cats": "عقارات · فنادق · جمال · سهر · مطاعم ومقاهي · صحة · تقنية", "lb_ep": "الحلقة كاملة ↗"};
 const BEATS_AR=["هذا البيت<br><span style=\"--c:#f5b537\">لم يُبَع</span>", "شاهد <span style=\"--c:#f5b537\">هذا</span>", "<span style=\"--c:#fe6a9f\">بناء</span>", "<span style=\"--c:#8794fe\">ترميم</span>", "<span style=\"--c:#2fd0c1\">ألوان</span>", "<span style=\"--c:#8cda54\">تدرّج</span>", "<span style=\"--c:#f5b537\">توهّج</span>", "<span style=\"--c:#ff9f5a\">من الخارج</span>", "<span style=\"--c:#ffd27a\">من الداخل</span>", "كل <span style=\"--c:#f5b537\">تفصيل</span>", "والآن <span style=\"--c:#fe3639\">بِيع</span>"];
 const WORDS_AR=[['العقارات',C.gold],['الفنادق',C.orange],['الجمال',C.pink],['السهر',C.purple],['المطاعم والمقاهي',C.green],['الصحة',C.teal],['التقنية','#4aa3ff'],['الإعلانات',C.red]];
 const BRIEFS={en:[['Real estate reel','a real estate reel'],['Villa / hotel tour','a villa or hotel tour video'],['Beauty / product','a beauty or product video'],['Event recap','an event recap'],['Restaurant / café','a restaurant or café reel'],['Something else','a video edit']],
@@ -1143,15 +1148,14 @@ const tabsEl=$('tabs'),tabsBg=document.createElement('div');tabsBg.id='tabsBg';t
 let tbTop=70,tbOn=false,tbH=-1;const tbMeasure=()=>{tbTop=parseFloat(getComputedStyle(tabsEl).top)||70};tbMeasure();addEventListener('resize',tbMeasure);
 function tabsBack(){const r=tabsEl.getBoundingClientRect(),on=r.top<=tbTop+.5&&r.bottom>tbTop;if(on!==tbOn){tabsBg.classList.toggle('on',on);tbOn=on}
  if(on){const h=Math.round(r.bottom);if(h!==tbH){tabsBg.style.height=h+'px';tbH=h}}}
-/* ---------- showreel player ---------- */
-const reelV=$('reelVid'),rph=reelV.parentElement,rbar=$('reelBar');let rSeen=false;
-const reelGo=()=>{reelV.muted=false;if(reelV.ended)reelV.currentTime=0;const p=reelV.play();if(p&&p.catch)p.catch(()=>{reelV.muted=true;reelV.play().catch(()=>{})})};
-$('reelPlay').addEventListener('click',reelGo);
-reelV.addEventListener('click',()=>{reelV.paused?reelGo():reelV.pause()});
-reelV.addEventListener('play',()=>rph.classList.add('playing','started'));
-['pause','ended'].forEach(e=>reelV.addEventListener(e,()=>rph.classList.remove('playing')));
-document.querySelectorAll('a[href="#reel"]').forEach(a=>a.addEventListener('click',()=>{reelV.currentTime=0;rSeen=false;reelGo()}));
-new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)rSeen=true;else if(rSeen&&!reelV.paused)reelV.pause()}),{threshold:.15}).observe(rph);
+/* ---------- how it works: playhead over the step clips (runs only while on screen) ---------- */
+{const tr=$('etr'),ph=$('eph'),cl=[...tr.querySelectorAll('.ec')],li=[...document.querySelectorAll('.esteps li')];let on=false,last=-1,raf=0;
+ const tick=now=>{const W=tr.clientWidth-28,x=(now%8000)/8000*W;ph.style.transform=`translate3d(${x.toFixed(1)}px,0,0)`;
+  let k=0;cl.forEach((c,i)=>{if(x>=c.offsetLeft-14)k=i});
+  if(k!==last){cl.forEach((c,i)=>c.classList.toggle('on',i===k));li.forEach((l,i)=>l.classList.toggle('on',i===k));last=k}
+  if(on)raf=requestAnimationFrame(tick)};
+ if(!reduce)new IntersectionObserver(es=>{on=es[0].isIntersecting;cancelAnimationFrame(raf);if(on)raf=requestAnimationFrame(tick)}).observe(tr);
+ else cl.forEach(c=>c.classList.add('on'))}
 /* ---------- one loop, frame-rate independent (60/120/144 Hz) ---------- */
 const bar=$('progress'),totop=$('totop');let last=performance.now(),lastY=-1,lastP=-1,ttOn=false;
 const damp=(rate,dt)=>1-Math.exp(-rate*dt);let trailCol='#f5b537',trailColT=-1e9;
@@ -1160,7 +1164,6 @@ function frame(now){
  const y=scrollY;
  if(y!==lastY){tabsBack();bar.style.transform=`scaleX(${Math.min(1,y/L.max)})`;lastY=y;const tt=y>innerHeight*1.4&&!lbOpenNow;if(tt!==ttOn){totop.classList.toggle('show',tt);ttOn=tt}}
  pickPlaying(now);
- if(!reelV.paused&&reelV.duration)rbar.style.transform=`scaleX(${(reelV.currentTime/reelV.duration).toFixed(4)})`;
  if(fine&&!reduce){cdot.style.transform=`translate3d(${mx}px,${my}px,0)`;const kc=damp(16,dt);rx2+=(mx-rx2)*kc;ry2+=(my-ry2)*kc;csc+=((cdown?.78:1)-csc)*damp(20,dt);
   let tx2=rx2,ty2=ry2;
   if(curStyle==='mg'&&magEl&&magEl.isConnected){const r=magEl.getBoundingClientRect(),cx3=r.left+r.width/2,cy3=r.top+r.height/2;tx2=cx3+(mx-cx3)*.18;ty2=cy3+(my-cy3)*.18;

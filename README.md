@@ -8,6 +8,5 @@ Static site, no build step. Deploy the repository root as is (Netlify: publish d
 - `frames/`: scroll-story frames (old house to sold)
 - `full/`: the 100 portfolio videos
 - `work/`: video covers
-- `img/`: logo and showreel poster
-- `showreel.mp4`: the showreel
+- `img/`: logo
 - `_headers`: Netlify caching headers
