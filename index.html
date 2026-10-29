@@ -1005,10 +1005,10 @@ WORK.forEach(w=>{const t=TT[w.slug];if(t){w.title=t[0];w.kind=t[1]}w.fmt=w.w>w.h
 const fullSrc=w=>`full/${w.slug}.mp4`;
 const label=w=>w.client==='Concept edit'&&lang==='ar'?'مونتاج مفهوم':(w.client||(lang==='ar'?CATN_AR[w.cat]:CATN[w.cat]));
 const kindT=k=>lang==='ar'?(KIND_AR[k]||k):k;
-const meta=w=>`${kindT(w.kind||'')} · ${w.fmt} · ${mmss(w.dur)}`+(w.ep?` · ${lang==='ar'?'الحلقة كاملة':'Full episode'} ${mmss(w.epdur)}`:'');
+const meta=w=>`${kindT(w.kind||'')} · ${w.fmt}`;
 const card=w=>`<figure class="item${w.w>w.h?' wide':''}" data-cat="${w.cat}" data-slug="${w.slug}" style="--cc:${CATC[w.cat]}">
  <a class="vid" href="${w.href}" target="_blank" rel="noopener" data-slug="${w.slug}" aria-label="Play ${esc(label(w))} – ${esc(w.title)}">
-  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-poster="work/${w.slug}.jpg" data-src="${FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${FULL.has(w.slug)?(w.ss||0):0}"></video><span class="dur">${mmss(w.dur)}</span>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
+  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-poster="work/${w.slug}.jpg" data-src="${FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${FULL.has(w.slug)?(w.ss||0):0}"></video>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
  <figcaption><span class="cl" style="color:${bcol(w.client)||CATC[w.cat]}">${esc(label(w))}</span><span class="ti">${esc(w.title)}</span><span class="kd" data-kd="${esc(w.kind||'')}">${esc(w.kind||'')}</span>${(w.client||'').startsWith('HIDE')?`<a class="ig" href="${IG}" target="_blank" rel="noopener">See HIDE on Instagram ↗</a>`:''}</figcaption></figure>`;
 $('grid').innerHTML=WORK.filter(w=>w.h>=w.w).map(card).join('');
 $('films').innerHTML=WORK.filter(w=>w.w>w.h).map(card).join('');
