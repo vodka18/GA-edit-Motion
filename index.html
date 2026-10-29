@@ -603,7 +603,7 @@ html:not(.rich) .wall .col:nth-child(3) video{animation-duration:19s;animation-d
 @media (max-width:380px){.etr{padding-inline:10px}.ec{flex:1 1 0;padding:0 4px;justify-content:center}.ec b{font-size:9.5px;letter-spacing:0}}
 @media (prefers-reduced-motion:reduce){.esteps li{opacity:1}}
 /* story under the timeline: four chapters, lit one by one by the playhead */
-.gast{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;font-size:1.18em;color:var(--accent);letter-spacing:.01em}
+.gast{white-space:nowrap;font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;font-size:1.18em;color:var(--accent);letter-spacing:.01em}
 [dir=rtl] .gast{font-family:Amiri,serif;font-style:normal}
 .esteps.gastory{grid-template-columns:1fr!important;gap:0;margin-top:34px;position:relative;max-width:760px}
 .esteps.gastory::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:linear-gradient(transparent,color-mix(in srgb,var(--accent) 60%,transparent) 10%,color-mix(in srgb,var(--accent) 60%,transparent) 90%,transparent)}
@@ -823,9 +823,19 @@ for(const step of [24,8,4,2,1])for(let i=0;i<N;i+=step)if(!seen.has(i)){seen.add
 if(!seen.has(N-1))order.push(N-1);
 let qi=0,inflight=0,dirty=true;
 function pump(){while(inflight<6&&qi<order.length){const i=order[qi++],im=new Image();inflight++;im.decoding='async';
- const done=b=>{frames[i]=b;inflight--;dirty=true;pump()};
- im.onload=()=>{if(window.createImageBitmap)createImageBitmap(im).then(done,()=>done(im));else if(im.decode)im.decode().then(()=>done(im),()=>done(im));else done(im)};
+ im.onload=()=>{imgs[i]=im;inflight--;if(!lite||i%4===0||i===N-1||Math.abs(i-curF)<=20)bmp(i);pump()};
  im.onerror=()=>{inflight--;pump()};im.src=src(i)}}
+/* phones/tablets: decoded frames cost ~1.5 MB each, so keep keyframes (every 4th) plus a window around the
+   current frame, decoded at screen size; laptops keep every frame */
+const lite=!fine||innerWidth<640,imgs=new Array(N),pend=new Set();let curF=0;
+const BW=Math.min(832,Math.round((innerWidth-12)*Math.min(window.devicePixelRatio||1,2))),BH=Math.round(BW*468/832);
+function bmp(i){if(frames[i]||pend.has(i)||!imgs[i])return;const im=imgs[i];
+ if(!window.createImageBitmap){frames[i]=im;dirty=true;return}pend.add(i);
+ const ok=b=>{pend.delete(i);frames[i]=b;dirty=true},no=()=>{pend.delete(i);frames[i]=im;dirty=true};
+ (lite?createImageBitmap(im,{resizeWidth:BW,resizeHeight:BH,resizeQuality:'medium'}).catch(()=>createImageBitmap(im)):createImageBitmap(im)).then(ok,no)}
+function keepWindow(c){if(!lite||c===curF)return;curF=c;
+ for(let i=Math.max(0,c-20);i<=Math.min(N-1,c+20);i++)bmp(i);
+ for(let i=0;i<N;i++){const f=frames[i];if(f&&i%4&&i!==N-1&&Math.abs(i-c)>28){if(f.close)f.close();frames[i]=undefined}}}
 pump();
 function nearest(i){for(let d=0;d<N;d++){if(frames[i-d])return frames[i-d];if(frames[i+d])return frames[i+d]}return null}
 
@@ -998,7 +1008,7 @@ const kindT=k=>lang==='ar'?(KIND_AR[k]||k):k;
 const meta=w=>`${kindT(w.kind||'')} · ${w.fmt} · ${mmss(w.dur)}`+(w.ep?` · ${lang==='ar'?'الحلقة كاملة':'Full episode'} ${mmss(w.epdur)}`:'');
 const card=w=>`<figure class="item${w.w>w.h?' wide':''}" data-cat="${w.cat}" data-slug="${w.slug}" style="--cc:${CATC[w.cat]}">
  <a class="vid" href="${w.href}" target="_blank" rel="noopener" data-slug="${w.slug}" aria-label="Play ${esc(label(w))} – ${esc(w.title)}">
-  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" poster="work/${w.slug}.jpg" data-src="${FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${FULL.has(w.slug)?(w.ss||0):0}"></video><span class="dur">${mmss(w.dur)}</span>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
+  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-poster="work/${w.slug}.jpg" data-src="${FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${FULL.has(w.slug)?(w.ss||0):0}"></video><span class="dur">${mmss(w.dur)}</span>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
  <figcaption><span class="cl" style="color:${bcol(w.client)||CATC[w.cat]}">${esc(label(w))}</span><span class="ti">${esc(w.title)}</span><span class="kd" data-kd="${esc(w.kind||'')}">${esc(w.kind||'')}</span>${(w.client||'').startsWith('HIDE')?`<a class="ig" href="${IG}" target="_blank" rel="noopener">See HIDE on Instagram ↗</a>`:''}</figcaption></figure>`;
 $('grid').innerHTML=WORK.filter(w=>w.h>=w.w).map(card).join('');
 $('films').innerHTML=WORK.filter(w=>w.w>w.h).map(card).join('');
@@ -1030,6 +1040,11 @@ function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick
   else{v._sel=0;if(!v.paused)v.pause();if(it)it.classList.remove('live');
    if(v.src){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:3000)){v.removeAttribute('src');v.load();v._off=0}}}}}
 document.querySelectorAll('.item video,.wall video').forEach(v=>vio?vio.observe(v):arm(v));
+/* covers: fetched only when a card is within ~3 screens, so the first load stays light */
+{const pv=[...document.querySelectorAll('.item video[data-poster]')],setP=v=>{if(!v.getAttribute('poster'))v.setAttribute('poster',v.dataset.poster)};
+ if('IntersectionObserver' in window){const po=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){setP(e.target);po.unobserve(e.target)}}),{rootMargin:'300% 150%'});pv.forEach(v=>po.observe(v));
+ /* the swipeable films row clips its own cards, so load the whole row once it gets near */
+ const fr=$('films');if(fr){const fo=new IntersectionObserver(es=>{if(es[0].isIntersecting){fo.disconnect();fr.querySelectorAll('video[data-poster]').forEach(setP)}},{rootMargin:'300% 0px'});fo.observe(fr)}}else pv.forEach(setP)}
 $('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;const c=b.dataset.cat;
  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b?'true':'false'));
  applyFilter(c);tabColor=c==='all'?C.gold:CATC[c];applyAccent();lastPick=0;
@@ -1113,7 +1128,7 @@ if(!fine&&!reduce){
 const KIND_AR={"Villa tour": "جولة في فيلا", "Talking-head reel": "ريل تقديمي", "Product reel": "ريل منتج", "DJ night promo": "إعلان سهرة DJ", "Project reel": "ريل مشروع", "Podcast": "بودكاست", "Podcast highlights": "مقتطفات بودكاست", "Hotel reel": "ريل فندق", "Health explainer": "شرح صحي", "Event film": "فيلم فعالية", "Bartender profile": "بروفايل بارتندر", "Venue reel": "ريل مكان", "Treatment reel": "ريل علاج", "Store story reel": "قصة من المتجر", "Store reel": "ريل متجر", "Speed-ramp edit": "مونتاج سبيد رامب", "Gym reel": "ريل نادٍ رياضي", "Creator collab": "تعاون مع صانعة محتوى", "Awareness campaign": "حملة توعية", "Treatment explainer": "شرح علاج", "Team film": "فيلم الفريق", "Studio reel": "ريل استوديو", "Store promo": "إعلان متجر", "Seaside villa tour": "جولة فيلا على البحر", "SaaS launch film": "فيلم إطلاق منصة", "Restaurant reel": "ريل مطعم", "Resort tour": "جولة في منتجع", "Residential reel": "ريل سكني", "Q&A reel": "أسئلة وأجوبة", "Property tour": "جولة في عقار", "Product promo": "إعلان منتج", "Product animation": "أنيميشن منتج", "Photo reel": "ريل صور", "Menu reel": "ريل قائمة الطعام", "Map animation": "أنيميشن خريطة", "Makeup tutorial": "درس مكياج", "Makeover reel": "ريل تحوّل", "Luxury hotel reel": "ريل فندق فاخر", "Info reel": "ريل معلومات", "Hotel interiors": "ديكور فندق", "Hospitality reel": "ريل ضيافة", "Health tip": "نصيحة صحية", "Guesthouse tour": "جولة في بيت ضيافة", "Explainer reel": "ريل شرح", "Event recap": "ملخّص فعالية", "Event details": "تفاصيل فعالية", "Dessert shop reel": "ريل حلويات", "Customer reel": "ريل زبائن", "Concept edit · before → after": "مونتاج مفهوم · قبل وبعد", "Competition reveal": "إعلان مسابقة", "Commercial listing": "عقار تجاري", "Cocktail launch": "إطلاق كوكتيل", "Class reel": "ريل حصة", "Challenge series": "سلسلة تحدّي", "Challenge reel": "ريل تحدّي", "Brand film": "فيلم براند", "Behind the scenes": "كواليس", "Bar launch film": "فيلم افتتاح بار", "Animated menu": "قائمة متحرّكة"};
 const CATN_AR={realestate:'العقارات',hotels:'الفنادق',beauty:'الجمال',drinks:'المشروبات والسهر',food:'المطاعم والمقاهي',health:'الصحة والرياضة',retail:'التجزئة',saas:'التقنية'};
 const I18N_AR={"nav_brands": "البراندات", "nav_work": "الأعمال", "nav_book": "احجز<span class=\"xs-hide\"> الآن</span>", "hero_h1": "<span class=\"ln\">نجعل علامتك</span><span class=\"ln\"><span class=\"sh\">تتحرّك.</span></span>", "hero_lede": "<span class=\"l1\">مونتاج فيديو وموشن غرافيك لـ</span><span class=\"l2\"><span class=\"g g1\"><b>العقارات</b> <i></i> <b>الفنادق</b></span> <span class=\"g g2\"><b>الجمال</b> <i></i> <b>السهر</b></span> <span class=\"g g3\"><b>المطاعم</b> <i></i> <b>الصحة</b> <i></i> <b>التقنية</b></span></span><span class=\"l3\"><em>علامات تجارية حول العالم</em></span>", "hero_see": "شاهد الأعمال", "st_hint": "مرّر لترميمه ↓", "st_want": "تريد مثله لعقارك؟", "book_edit": "احجز المونتاج", "st_skip": "تخطَّ إلى الأعمال ↓", "br_chap": "براندات عملنا معها", "wk_chap": "أعمال مختارة", "wk_we": "نُمنتج لـ", "wk_lede": "ريلز، فعاليات، إطلاقات وبودكاست. اضغط على أي فيديو لتشاهده هنا مع الصوت.", "wk_films": "أفلام وفعاليات", "wk_more": "أعمال أكثر عند الطلب · <a href=\"#book\">احجز المونتاج</a>", "rl_chap": "منذ 2006", "sy0b": "أول لقطة", "sy0s": "بدأت القصة بكاميرا وشغف لم أكن أعرف كيف أشرحه. صوّرت كل شيء، وسهرت على المونتاج لأرى اللحظة تعيش من جديد.", "sy1b": "نشأت في العمل العائلي", "sy1s": "علّمني العمل العائلي كيف تعمل العلامات التجارية الحقيقية. كل عميل، كل تفصيل، وكل وعد. هناك تعلّمت أن أُصغي قبل أن أقطع.", "sy2b": "عشرون عاماً من المونتاج", "sy2s": "تغيّرت الأدوات سنة بعد سنة. كاميرات، برامج، موشن، والآن الذكاء الاصطناعي. لكن الهدف بقي واحداً. أن يشعر الناس بشيء من الثانية الأولى.", "sy3b": "وما زلنا نتطوّر", "sy3s": "اليوم يعمل GA مع علامات تجارية حول العالم. القصة لم تنتهِ، وما زلنا نتطوّر. كل مشروع هو الفصل التالي.", "sy1y": "منذ 2006", "sy2y": "حتى 2026", "sy_ask": "هل أنت جاهز لتكون علامتك فصلنا التالي؟", "sy_cta": "ابدأ فصلك", "sy_end": "بعد عشرين عاماً، ما زالت تبدأ بالطريقة نفسها. لقطة تلو لقطة.", "rl_h2": "كل براند.<br><span class=\"ac\">إيقاع واحد.</span>", "rl_lede": "من اللقطات الخام إلى النسخة النهائية، <span class=\"gast\">على طريقة GA.</span>", "st0b": "أرسل لقطاتك", "st0s": "لقطات خام، فيديو من الهاتف أو مجرّد فكرة.", "st1b": "نبني القصة", "st1s": "جذب من الثانية الأولى، وكل قطع على الإيقاع.", "st2b": "موشن، ألوان وصوت", "st2s": "عناوين، تلوين، توهّج وتصميم صوتي.", "st3b": "جاهز لكل منصة", "st3s": "‏9:16 للسوشيال، ‏16:9 للشاشات، وشعارك في النهاية.", "bk_h2": "احجز <span class=\"sh\">المونتاج</span>", "bk_ask": "ماذا تحتاج؟ اختر وستُكتب الرسالة تلقائياً.", "bk_sub": "راسلني أو اتصل · أعمال أكثر عند الطلب", "bk_wa": "راسلني على واتساب", "bk_top": "للأعلى", "lb_hint": "اسحب للفيديو التالي ←", "ft_cats": "عقارات · فنادق · جمال · سهر · مطاعم ومقاهي · صحة · تقنية", "lb_ep": "الحلقة كاملة ↗"};
-const BEATS_AR=["هذا البيت<br><span style=\"--c:#f5b537\">لم يُبَع</span>", "شاهد <span style=\"--c:#f5b537\">هذا</span>", "<span style=\"--c:#fe6a9f\">بناء</span>", "<span style=\"--c:#8794fe\">ترميم</span>", "<span style=\"--c:#2fd0c1\">ألوان</span>", "<span style=\"--c:#8cda54\">تدرّج</span>", "<span style=\"--c:#f5b537\">توهّج</span>", "<span style=\"--c:#ff9f5a\">من الخارج</span>", "<span style=\"--c:#ffd27a\">من الداخل</span>", "كل <span style=\"--c:#f5b537\">تفصيل</span>", "والآن <span style=\"--c:#fe3639\">بِيع</span>"];
+const BEATS_AR=["هذا البيت <br><span style=\"--c:#f5b537\">لم يُبَع</span>", "شاهد <span style=\"--c:#f5b537\">هذا</span>", "<span style=\"--c:#fe6a9f\">بناء</span>", "<span style=\"--c:#8794fe\">ترميم</span>", "<span style=\"--c:#2fd0c1\">ألوان</span>", "<span style=\"--c:#8cda54\">تدرّج</span>", "<span style=\"--c:#f5b537\">توهّج</span>", "<span style=\"--c:#ff9f5a\">من الخارج</span>", "<span style=\"--c:#ffd27a\">من الداخل</span>", "كل <span style=\"--c:#f5b537\">تفصيل</span>", "والآن <span style=\"--c:#fe3639\">بِيع</span>"];
 const WORDS_AR=[['العقارات',C.gold],['الفنادق',C.orange],['الجمال',C.pink],['السهر',C.purple],['المطاعم والمقاهي',C.green],['الصحة',C.teal],['التقنية','#4aa3ff'],['الإعلانات',C.red]];
 const BRIEFS={en:[['Real estate reel','a real estate reel'],['Villa / hotel tour','a villa or hotel tour video'],['Beauty / product','a beauty or product video'],['Event recap','an event recap'],['Restaurant / café','a restaurant or café reel'],['Something else','a video edit']],
  ar:[['ريل عقاري','ريل عقاري'],['جولة فيلا / فندق','فيديو جولة لفيلا أو فندق'],['جمال / منتج','فيديو جمال أو منتج'],['ملخّص فعالية','ملخّص لفعالية'],['مطعم / مقهى','ريل لمطعم أو مقهى'],['شيء آخر','مونتاج فيديو']]};
@@ -1207,7 +1222,7 @@ function frame(now){
  if(y+innerHeight>L.top&&y<L.top+L.span+innerHeight){
   const p=Math.min(1,Math.max(0,(y-L.top)/L.span));
   shown=reduce?p:shown+(p-shown)*damp(fine?13:20,dt);if(Math.abs(p-shown)<.00015)shown=p;
-  const f=shown*(N-1),t=f/FPS;
+  const f=shown*(N-1),t=f/FPS;keepWindow(Math.round(f));
   const e0=Math.min(1,shown/.07),e=L.vw<640?0:Math.round(e0*e0*(3-2*e0)*1000)/1000;
   if(e!==lastE){
    monitor.style.width=(L.small+(L.big-L.small)*e).toFixed(1)+'px';
