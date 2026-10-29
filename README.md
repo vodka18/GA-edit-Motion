@@ -1,6 +1,6 @@
 # GA · Edit · Motion · Story
 
-Portfolio site for GA: video editing, motion graphics and AI editing for real estate, hotels, beauty, nightlife, food, health and tech brands across Lebanon and Qatar.
+Portfolio site for GA: video editing, motion graphics and AI editing for real estate, hotels, beauty, nightlife, food, health and tech brands across the world.
 
 Static site, no build step. Deploy the repository root as is (Netlify: publish directory `.`).
 

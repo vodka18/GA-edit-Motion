@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="GA: video editing, motion graphics and AI editing for real estate, hotels, beauty, nightlife, food, health and tech brands across Lebanon and Qatar.">
+<meta name="description" content="GA: video editing, motion graphics and AI editing for real estate, hotels, beauty, nightlife, food, health and tech brands across the world.">
 <meta name="theme-color" content="#07060a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GA · Edit · Motion · Story">
-<meta property="og:description" content="Video editing and motion graphics for brands across Lebanon and Qatar. 100 reels, one scroll.">
+<meta property="og:description" content="Video editing and motion graphics for brands across the world. 100 reels, one scroll.">
 <link rel="icon" type="image/png" href="img/ga-only.png">
 <link rel="apple-touch-icon" href="img/ga-only.png">
 <title>GA Edit Motion Story</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,700&family=Cairo:wght@400;600;700;800;900&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,700&family=Cairo:wght@400;600;700;800;900&family=Figtree:wght@400;500;600&family=Cormorant+Garamond:wght@600&family=Amiri:wght@400;700&display=swap">
 <style>
 /* Layout: GA's edit suite as a motion piece. Every section is a chapter on one timeline, each with its own light colour; the accent glides between them as you scroll. Single dark look from the brand video. */
 @property --accent{syntax:'<color>';inherits:true;initial-value:#f5b537}
@@ -562,6 +562,22 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
 .gb.phone>.rbar.rbar{position:absolute;left:20px;right:20px;bottom:18px;height:3px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden;z-index:2;opacity:0;transition:opacity .4s;pointer-events:none}
 .phone.started>.rbar.rbar{opacity:1}
 .rbar i{display:block;height:100%;background:var(--accent);transform-origin:0 50%;transform:scaleX(0);box-shadow:0 0 10px var(--accent)}
+/* hero subtitle: categories in Cormorant caps with gold hairlines, "brands across the world" between gold rules */
+.hl3{max-width:none}.hl3>span{display:block}
+.hl3 .l1{font:500 15px/1.5 var(--body);letter-spacing:.02em;color:#bdb8ad}
+.hl3 .l2{font:600 clamp(19px,2vw,26px)/1.55 "Cormorant Garamond",Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#f6f3ec;margin:8px 0 14px}
+.hl3 .l2 b{font-weight:inherit}
+.hl3 .l2 i,.hl3 .g1::after{content:"";display:inline-block;width:1px;height:.75em;background:var(--gold);margin:0 .5em;vertical-align:-.05em;opacity:.85}
+.hl3 .g{white-space:nowrap}.hl3 .g1,.hl3 .g2{display:inline}.hl3 .g3{display:block}
+.hl3 .l3{display:flex!important;align-items:center;justify-content:flex-start;gap:14px;white-space:nowrap;font:500 11px var(--display);letter-spacing:.42em;text-transform:uppercase;color:#d9d5cc}
+.hl3 .l3 em{font-style:normal;margin-inline-end:-.42em}
+.hl3 .l3::before,.hl3 .l3::after{content:"";flex:none;width:38px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}.hl3 .l3::after{transform:scaleX(-1)}
+@media (max-width:820px){.hl3 .l3{justify-content:center}}
+@media (max-width:560px){.hl3 .g{display:block!important}.hl3 .g1::after{display:none}.hl3 .l3{letter-spacing:.3em;gap:10px}.hl3 .l3 em{margin-inline-end:-.3em}.hl3 .l3::before,.hl3 .l3::after{width:24px}}
+@media (max-width:360px){.hl3 .l2{font-size:16px;letter-spacing:.11em}.hl3 .l3{letter-spacing:.2em}.hl3 .l3 em{margin-inline-end:-.2em}}
+[dir=rtl] .hl3 .l1{font:500 17px/1.6 Cairo,sans-serif;letter-spacing:0}
+[dir=rtl] .hl3 .l2{font:700 clamp(21px,2.1vw,27px)/1.7 Amiri,serif;letter-spacing:0}
+[dir=rtl] .hl3 .l3{font:400 17px Amiri,serif;letter-spacing:0}[dir=rtl] .hl3 .l3 em{margin:0}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -588,7 +604,7 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
       </div>
       <div>
         <h1 data-i18n="hero_h1"><span class="ln">We make</span><span class="ln">brands <span class="sh">move.</span></span></h1>
-        <p class="lede" data-i18n="hero_lede">Video editing and motion graphics for real estate, hotels, beauty, nightlife, food, health and tech brands across Lebanon and Qatar.</p>
+        <p class="lede hl3" data-i18n="hero_lede"><span class="l1">Video editing &amp; motion graphics for</span><span class="l2"><span class="g g1"><b>Real Estate</b> <i></i> <b>Hotels</b></span> <span class="g g2"><b>Beauty</b> <i></i> <b>Nightlife</b></span> <span class="g g3"><b>Food</b> <i></i> <b>Health</b> <i></i> <b>Tech</b></span></span><span class="l3"><em>Brands across the world</em></span></p>
         <div class="acts"><a class="btn g" href="#work"><span data-i18n="hero_see">See the work</span><svg class="i go" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn o" href="#reel"><svg class="i pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5l11 6.5-11 6.5z" fill="currentColor" stroke="none"/></svg><span data-i18n="hero_play">Play showreel</span></a></div>
       </div>
     </div>
@@ -1052,7 +1068,7 @@ if(!fine&&!reduce){
 /* ---------- Arabic / English ---------- */
 const KIND_AR={"Villa tour": "جولة في فيلا", "Talking-head reel": "ريل تقديمي", "Product reel": "ريل منتج", "DJ night promo": "إعلان سهرة DJ", "Project reel": "ريل مشروع", "Podcast": "بودكاست", "Podcast highlights": "مقتطفات بودكاست", "Hotel reel": "ريل فندق", "Health explainer": "شرح صحي", "Event film": "فيلم فعالية", "Bartender profile": "بروفايل بارتندر", "Venue reel": "ريل مكان", "Treatment reel": "ريل علاج", "Store story reel": "قصة من المتجر", "Store reel": "ريل متجر", "Speed-ramp edit": "مونتاج سبيد رامب", "Gym reel": "ريل نادٍ رياضي", "Creator collab": "تعاون مع صانعة محتوى", "Awareness campaign": "حملة توعية", "Treatment explainer": "شرح علاج", "Team film": "فيلم الفريق", "Studio reel": "ريل استوديو", "Store promo": "إعلان متجر", "Seaside villa tour": "جولة فيلا على البحر", "SaaS launch film": "فيلم إطلاق منصة", "Restaurant reel": "ريل مطعم", "Resort tour": "جولة في منتجع", "Residential reel": "ريل سكني", "Q&A reel": "أسئلة وأجوبة", "Property tour": "جولة في عقار", "Product promo": "إعلان منتج", "Product animation": "أنيميشن منتج", "Photo reel": "ريل صور", "Menu reel": "ريل قائمة الطعام", "Map animation": "أنيميشن خريطة", "Makeup tutorial": "درس مكياج", "Makeover reel": "ريل تحوّل", "Luxury hotel reel": "ريل فندق فاخر", "Info reel": "ريل معلومات", "Hotel interiors": "ديكور فندق", "Hospitality reel": "ريل ضيافة", "Health tip": "نصيحة صحية", "Guesthouse tour": "جولة في بيت ضيافة", "Explainer reel": "ريل شرح", "Event recap": "ملخّص فعالية", "Event details": "تفاصيل فعالية", "Dessert shop reel": "ريل حلويات", "Customer reel": "ريل زبائن", "Concept edit · before → after": "مونتاج مفهوم · قبل وبعد", "Competition reveal": "إعلان مسابقة", "Commercial listing": "عقار تجاري", "Cocktail launch": "إطلاق كوكتيل", "Class reel": "ريل حصة", "Challenge series": "سلسلة تحدّي", "Challenge reel": "ريل تحدّي", "Brand film": "فيلم براند", "Behind the scenes": "كواليس", "Bar launch film": "فيلم افتتاح بار", "Animated menu": "قائمة متحرّكة"};
 const CATN_AR={realestate:'العقارات',hotels:'الفنادق',beauty:'الجمال',drinks:'المشروبات والسهر',food:'المطاعم والمقاهي',health:'الصحة والرياضة',retail:'التجزئة',saas:'التقنية'};
-const I18N_AR={"nav_brands": "البراندات", "nav_work": "الأعمال", "nav_book": "احجز<span class=\"xs-hide\"> الآن</span>", "hero_h1": "<span class=\"ln\">نجعل علامتك</span><span class=\"ln\"><span class=\"sh\">تتحرّك.</span></span>", "hero_lede": "مونتاج فيديو وموشن غرافيك للعقارات والفنادق والجمال والسهر والمطاعم والصحة والتقنية في لبنان وقطر.", "hero_see": "شاهد الأعمال", "hero_play": "شغّل الشوريل", "st_hint": "مرّر لترميمه ↓", "st_want": "تريد مثله لعقارك؟", "book_edit": "احجز المونتاج", "st_skip": "تخطَّ إلى الأعمال ↓", "br_chap": "براندات عملنا معها", "wk_chap": "أعمال مختارة", "wk_we": "نُمنتج لـ", "wk_lede": "ريلز، فعاليات، إطلاقات وبودكاست. اضغط على أي فيديو لتشاهده هنا مع الصوت.", "wk_films": "أفلام وفعاليات", "wk_more": "أعمال أكثر عند الطلب · <a href=\"#book\">احجز المونتاج</a>", "rl_chap": "الشوريل", "rl_h2": "كل براند.<br><span class=\"ac\">إيقاع واحد.</span>", "rl_lede": "لمحة سريعة عن أحدث الأعمال. شغّله مع الصوت.", "st0b": "أرسل لقطاتك", "st0s": "لقطات خام، فيديو من الهاتف أو مجرّد فكرة.", "st1b": "نبني القصة", "st1s": "جذب من الثانية الأولى، وكل قطع على الإيقاع.", "st2b": "موشن، ألوان وصوت", "st2s": "عناوين، تلوين، توهّج وتصميم صوتي.", "st3b": "جاهز لكل منصة", "st3s": "‏9:16 للسوشيال، ‏16:9 للشاشات، وشعارك في النهاية.", "bk_h2": "احجز <span class=\"sh\">المونتاج</span>", "bk_ask": "ماذا تحتاج؟ اختر وستُكتب الرسالة تلقائياً.", "bk_sub": "راسلني أو اتصل · أعمال أكثر عند الطلب", "bk_wa": "راسلني على واتساب", "bk_top": "للأعلى", "lb_hint": "اسحب للفيديو التالي ←", "ft_cats": "عقارات · فنادق · جمال · سهر · مطاعم ومقاهي · صحة · تقنية", "lb_ep": "الحلقة كاملة ↗"};
+const I18N_AR={"nav_brands": "البراندات", "nav_work": "الأعمال", "nav_book": "احجز<span class=\"xs-hide\"> الآن</span>", "hero_h1": "<span class=\"ln\">نجعل علامتك</span><span class=\"ln\"><span class=\"sh\">تتحرّك.</span></span>", "hero_lede": "<span class=\"l1\">مونتاج فيديو وموشن غرافيك لـ</span><span class=\"l2\"><span class=\"g g1\"><b>العقارات</b> <i></i> <b>الفنادق</b></span> <span class=\"g g2\"><b>الجمال</b> <i></i> <b>السهر</b></span> <span class=\"g g3\"><b>المطاعم</b> <i></i> <b>الصحة</b> <i></i> <b>التقنية</b></span></span><span class=\"l3\"><em>علامات تجارية حول العالم</em></span>", "hero_see": "شاهد الأعمال", "hero_play": "شغّل الشوريل", "st_hint": "مرّر لترميمه ↓", "st_want": "تريد مثله لعقارك؟", "book_edit": "احجز المونتاج", "st_skip": "تخطَّ إلى الأعمال ↓", "br_chap": "براندات عملنا معها", "wk_chap": "أعمال مختارة", "wk_we": "نُمنتج لـ", "wk_lede": "ريلز، فعاليات، إطلاقات وبودكاست. اضغط على أي فيديو لتشاهده هنا مع الصوت.", "wk_films": "أفلام وفعاليات", "wk_more": "أعمال أكثر عند الطلب · <a href=\"#book\">احجز المونتاج</a>", "rl_chap": "الشوريل", "rl_h2": "كل براند.<br><span class=\"ac\">إيقاع واحد.</span>", "rl_lede": "لمحة سريعة عن أحدث الأعمال. شغّله مع الصوت.", "st0b": "أرسل لقطاتك", "st0s": "لقطات خام، فيديو من الهاتف أو مجرّد فكرة.", "st1b": "نبني القصة", "st1s": "جذب من الثانية الأولى، وكل قطع على الإيقاع.", "st2b": "موشن، ألوان وصوت", "st2s": "عناوين، تلوين، توهّج وتصميم صوتي.", "st3b": "جاهز لكل منصة", "st3s": "‏9:16 للسوشيال، ‏16:9 للشاشات، وشعارك في النهاية.", "bk_h2": "احجز <span class=\"sh\">المونتاج</span>", "bk_ask": "ماذا تحتاج؟ اختر وستُكتب الرسالة تلقائياً.", "bk_sub": "راسلني أو اتصل · أعمال أكثر عند الطلب", "bk_wa": "راسلني على واتساب", "bk_top": "للأعلى", "lb_hint": "اسحب للفيديو التالي ←", "ft_cats": "عقارات · فنادق · جمال · سهر · مطاعم ومقاهي · صحة · تقنية", "lb_ep": "الحلقة كاملة ↗"};
 const BEATS_AR=["هذا البيت<br><span style=\"--c:#f5b537\">لم يُبَع</span>", "شاهد <span style=\"--c:#f5b537\">هذا</span>", "<span style=\"--c:#fe6a9f\">بناء</span>", "<span style=\"--c:#8794fe\">ترميم</span>", "<span style=\"--c:#2fd0c1\">ألوان</span>", "<span style=\"--c:#8cda54\">تدرّج</span>", "<span style=\"--c:#f5b537\">توهّج</span>", "<span style=\"--c:#ff9f5a\">من الخارج</span>", "<span style=\"--c:#ffd27a\">من الداخل</span>", "كل <span style=\"--c:#f5b537\">تفصيل</span>", "والآن <span style=\"--c:#fe3639\">بِيع</span>"];
 const WORDS_AR=[['العقارات',C.gold],['الفنادق',C.orange],['الجمال',C.pink],['السهر',C.purple],['المطاعم والمقاهي',C.green],['الصحة',C.teal],['التقنية','#4aa3ff'],['الإعلانات',C.red]];
 const BRIEFS={en:[['Real estate reel','a real estate reel'],['Villa / hotel tour','a villa or hotel tour video'],['Beauty / product','a beauty or product video'],['Event recap','an event recap'],['Restaurant / café','a restaurant or café reel'],['Something else','a video edit']],
