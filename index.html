@@ -18,6 +18,11 @@
 /* Layout: GA's edit suite as a motion piece. Every section is a chapter on one timeline, each with its own light colour; the accent glides between them as you scroll. Single dark look from the brand video. */
 @property --accent{syntax:'<color>';inherits:true;initial-value:#f5b537}
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+/* hero motion variables change every frame: not inherited, so only the wall and the logo restyle, not everything inside them */
+@property --px{syntax:'<length>';inherits:false;initial-value:0px}
+@property --py{syntax:'<length>';inherits:false;initial-value:0px}
+@property --rx{syntax:'<angle>';inherits:false;initial-value:0deg}
+@property --ry{syntax:'<angle>';inherits:false;initial-value:0deg}
 :root{
   --eo:cubic-bezier(.16,1,.3,1);
   --bg:#07060a; --panel:#141519; --panel2:#1d1f25; --fg:#f6f3ec; --muted:#9d9ca6; --line:#2a2c33;
@@ -60,7 +65,7 @@ main{position:relative;z-index:1}
   -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--rw,2px)),#000 calc(100% - var(--rw,2px) + .5px));mask:radial-gradient(farthest-side,transparent calc(100% - var(--rw,2px)),#000 calc(100% - var(--rw,2px) + .5px));animation:spin 3.2s linear infinite}
 .logo .core{position:absolute;inset:var(--rw,2px);border-radius:50%;background:radial-gradient(circle at 50% 40%,#1b1820,#0a090c 70%);box-shadow:inset 0 0 18px color-mix(in srgb,var(--accent) 35%,transparent)}
 .logo img{position:relative;width:74%;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent) 70%,transparent));animation:pulse2 1.9s ease-in-out infinite alternate}
-@keyframes pulse2{from{transform:scale(.9);filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent) 50%,transparent))}to{transform:scale(1.04);filter:drop-shadow(0 0 9px var(--accent))}}
+@keyframes pulse2{from{transform:scale(.9)}to{transform:scale(1.04)}}
 @keyframes spin{to{transform:rotate(1turn)}}
 
 .biglogo{--sz:clamp(220px,32vw,380px);position:relative;width:var(--sz);height:var(--sz);flex:none;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
@@ -543,7 +548,7 @@ html.cc .curlab,html.cc .curlab *{cursor:auto}
 .num strong{white-space:nowrap}
 @media (max-width:420px){.num{gap:8px;padding:8px 8px 8px 10px}.num strong{font-size:clamp(22px,7.2vw,30px)}.num .ic{width:30px;height:30px}}
 
-[data-sec]:not(.inview) *,[data-sec]:not(.inview)::before,.divider:not(.inview) *,footer:not(.inview) *{animation-play-state:paused!important}
+[data-sec]:not(.inview) *,[data-sec]:not(.inview)::before,[data-sec]:not(.inview) *::before,[data-sec]:not(.inview) *::after,.divider:not(.inview) *,footer:not(.inview) *{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.pre{opacity:1;transform:none;filter:none}}
 /* sticky tabs backdrop: fills the gap under the header while the filter is pinned */
 #tabsBg{position:fixed;left:0;right:0;top:0;height:0;z-index:19;pointer-events:none;opacity:0;transition:opacity .35s;background:linear-gradient(180deg,rgba(7,6,10,.97) calc(100% - 16px),rgba(7,6,10,0))}
@@ -625,6 +630,24 @@ html:not(.rich) .wall .col:nth-child(3) video{animation-duration:19s;animation-d
 /* end-of-story "Book your edit": compact so it doesn't cover the house */
 .endcta .btn{min-width:0;min-height:38px;padding:9px 16px;font-size:11.5px}
 @media (max-width:640px){.endcta{bottom:10px;padding:4px}.endcta .btn{min-height:32px;padding:7px 13px;font-size:10px;letter-spacing:.06em}}
+/* phones/tablets: no animations that repaint every frame (moving gradients in text, animated glows/blur) */
+html:not(.rich) .bw{animation:none;background-position:100% 0}
+html:not(.rich) .sh{animation:none;background-position:160% 0}
+html:not(.rich) .tab[data-cat="all"][aria-selected="true"]{animation:none}
+@keyframes flipL{from{opacity:0;transform:translateY(.5em) rotateX(-90deg)}}
+html:not(.rich) .switch i{animation-name:flipL}
+@keyframes nodeL{to{transform:scale(1.18)}}
+html:not(.rich) .ec{filter:none;opacity:.55;transition:transform .4s var(--eo),opacity .4s}html:not(.rich) .ec.on{opacity:1}
+html:not(.rich) .steps li::before{animation-name:nodeL;box-shadow:0 0 14px color-mix(in srgb,var(--accent) 70%,transparent)}
+/* copy button keeps one width whatever its label says */
+.copy>span{display:inline-block;text-align:center}
+.bookbox{overflow:clip}
+@media (max-width:640px){
+ .copy{width:36px;padding:0;justify-content:center;flex:none}
+ .copy>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;min-width:0!important}
+ .copy.ok svg{display:none}.copy.ok::before{content:"✓";font:900 15px var(--display)}
+ .num strong{font-size:clamp(20px,6.4vw,30px)}}
+@media (max-width:360px){.num{gap:6px;padding:6px 6px 6px 8px}}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -1101,6 +1124,10 @@ const bl=document.querySelector('.bookbox .biglogo');if(bl&&!reduce){bl.classLis
 if(fine&&!reduce)document.querySelectorAll('.btn.g,.book').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${((e.clientX-r.left)/r.width-.5)*8}px,${((e.clientY-r.top)/r.height-.5)*6}px)`});b.addEventListener('pointerleave',()=>b.style.transform='')});
 
 /* ---------- copy phone ---------- */
+function copyW(){const lab=$('copyBtn').querySelector('span'),cur=lab.textContent;let w=0;lab.style.minWidth='';
+ for(const t of lang==='ar'?['نسخ','تم النسخ','تم التحديد']:['Copy','Copied','Selected']){lab.textContent=t;w=Math.max(w,lab.getBoundingClientRect().width)}
+ lab.textContent=cur;lab.style.minWidth=Math.ceil(w)+'px'}
+copyW();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(copyW);
 $('copyBtn').addEventListener('click',()=>{const b=$('copyBtn');
  const sel=()=>{const r=document.createRange();r.selectNodeContents($('phone'));const s=getSelection();s.removeAllRanges();s.addRange(r);b.querySelector('span').textContent=lang==='ar'?'تم التحديد':'Selected'};
  const lab=b.querySelector('span');try{navigator.clipboard.writeText('03 417 034').then(()=>{lab.textContent=lang==='ar'?'تم النسخ':'Copied';b.classList.add('ok');setTimeout(()=>{lab.textContent=lang==='ar'?'نسخ':'Copy';b.classList.remove('ok')},1600)},sel)}catch(_){sel()}});
@@ -1146,7 +1173,7 @@ function applyLang(l,first){if(!first)requestAnimationFrame(measure);lang=l;root
   if(!w.client||w.client==='Concept edit')it.querySelector('.cl').textContent=label(w);it.querySelector('.go i').textContent=l==='ar'?'تشغيل':'Play'});
  const B=BRIEFS[l];$('briefs').innerHTML=B.map(([lab,need])=>`<a class="brief" href="${WA+encodeURIComponent(l==='ar'?'مرحباً GA، شاهدت أعمالك وأحتاج '+need+'.':'Hi GA, I saw your portfolio. I need '+need+'.')}" target="_blank" rel="noopener">${lab}</a>`).join('');
  $('waMain').href=WA+encodeURIComponent(l==='ar'?'مرحباً GA، شاهدت أعمالك وأريد حجز مونتاج.':"Hi GA, I saw your portfolio and I'd like to book an edit.");
- $('copyBtn').querySelector('span').textContent=l==='ar'?'نسخ':'Copy';
+ $('copyBtn').querySelector('span').textContent=l==='ar'?'نسخ':'Copy';copyW();
  $('cringTxt').textContent=l==='ar'?'تشغيل':'Play';
  document.querySelectorAll('#langsw button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.l===l?'true':'false'));$('langsw').classList.toggle('is-ar',l==='ar');
  document.querySelectorAll('.item .ig').forEach(a=>a.textContent=l==='ar'?'شاهد HIDE على إنستغرام ↗':'See HIDE on Instagram ↗');
