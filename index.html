@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="GA: video editing, motion graphics and AI editing for real estate, hotels, beauty, nightlife, food, health and tech brands across the world.">
 <meta name="theme-color" content="#07060a">
+<script>window.GA_PREV=1</script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="GA · Edit · Motion · Story">
 <meta property="og:description" content="Video editing and motion graphics for brands across the world. 100 reels, one scroll.">
@@ -648,6 +649,12 @@ html:not(.rich) .steps li::before{animation-name:nodeL;box-shadow:0 0 14px color
  .copy.ok svg{display:none}.copy.ok::before{content:"✓";font:900 15px var(--display)}
  .num strong{font-size:clamp(20px,6.4vw,30px)}}
 @media (max-width:360px){.num{gap:6px;padding:6px 6px 6px 8px}}
+/* reels: the cover shows until the video's first frame is ready */
+.item video{transition:transform 1.2s var(--eo),opacity .35s ease}
+.item video.ld{opacity:0}
+.lbw{position:relative;display:block}
+.lbp{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:16px;background:#000;pointer-events:none;transition:opacity .35s ease}
+.lbw.ok .lbp{opacity:0}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -1029,12 +1036,14 @@ const TT={};
 const FULL=new Set(["house", "lr-shatt", "hide-aryme", "aqua-perfume-test", "worldclass-top6", "dr-pink-october", "loreal-bts", "re-adma", "lr-yoanne", "jlab-jessica", "aqua-mariam", "katara-raffles", "dr-whoosh", "re-joshua-batroun", "miraaya-gourmandes", "hide-elios", "re-depot-tripoli", "katara-rixos", "miraaya-purify", "parisa-menu", "tgm-persona", "toyota", "re-blue-horizon", "katara-ola", "loreal-recap", "jlab-spirulina", "marathon", "tgm-salam", "re-galliard", "katara-sheraton", "worldclass-pressure", "parisa-hospitality", "tgm-equipt", "tgm-hala", "re-joshua-hook", "katara-mhg", "jlab-elixir", "murwab-gym", "re-mariam-1", "katara-italy", "jlab-customer", "dr-pilates-maria", "re-mariam-2", "lr-lareva", "jlab-pictures", "dr-clock", "re-mariam-4", "lr-angelic-hills", "miraaya-relaxine", "diageo-menu", "parisa-messila", "dr-elissa", "re-mariam-prices", "lr-byblociel", "miraaya-sla", "parisa-restaurant", "dr-facial-elena", "re-mariam-construction", "lr-casa-asia", "aqua-lip-combo", "dr-fall-risk", "re-mariam-project", "lr-chabtine", "aqua-video7", "worldclass-mary", "dr-influencer-pilates", "re-mariam-same", "lr-etoile", "aqua-r01", "worldclass-simon", "dr-insurance", "re-sultan", "lr-fay", "aqua-lollis-makeover", "worldclass-nour", "dr-manuthera", "lr-serenity", "aqua-red-pick", "hide-dimitrios", "dr-pressotherapy", "lr-villa-joie", "aqua-touche", "hide-fadi", "dr-qa", "aqua-lollis-fullface", "hide-friends", "dr-pink-words", "saas-launch", "donjulio", "blackruby", "garnier", "diageo-whisky", "loreal-fsf", "donjulio-details", "diageo-zeralda", "donjulio-odette", "dr-team", "nyx-podcast", "nyx-christina", "diageo-cyrano"]);
 WORK.forEach(w=>{const t=TT[w.slug];if(t){w.title=t[0];w.kind=t[1]}w.fmt=w.w>w.h?'16:9':'9:16'});
 const fullSrc=w=>`full/${w.slug}.mp4`;
+/* phones/tablets on the hosted site: card and wall loops use light 6 s previews (prev/), the player still plays the full file */
+const PV=!!window.GA_PREV&&lite;
 const label=w=>w.client==='Concept edit'&&lang==='ar'?'مونتاج مفهوم':(w.client||(lang==='ar'?CATN_AR[w.cat]:CATN[w.cat]));
 const kindT=k=>lang==='ar'?(KIND_AR[k]||k):k;
 const meta=w=>`${kindT(w.kind||'')} · ${w.fmt}`;
 const card=w=>`<figure class="item${w.w>w.h?' wide':''}" data-cat="${w.cat}" data-slug="${w.slug}" style="--cc:${CATC[w.cat]}">
  <a class="vid" href="${w.href}" target="_blank" rel="noopener" data-slug="${w.slug}" aria-label="Play ${esc(label(w))} – ${esc(w.title)}">
-  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-poster="work/${w.slug}.jpg" data-src="${FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${FULL.has(w.slug)?(w.ss||0):0}"></video>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
+  <video muted loop playsinline disablepictureinpicture disableremoteplayback preload="none" data-poster="work/${w.slug}.jpg" data-src="${PV?`prev/${w.slug}.mp4`:FULL.has(w.slug)?fullSrc(w):`work/${w.slug}.mp4`}" data-t="${PV?0:FULL.has(w.slug)?(w.ss||0):0}"></video>${w.kind==='Podcast highlights'?'<span class="pod">🎙 Podcast</span>':''}<span class="go">▶ <i>Play</i></span></a>
  <figcaption><span class="cl" style="color:${bcol(w.client)||CATC[w.cat]}">${esc(label(w))}</span><span class="ti">${esc(w.title)}</span><span class="kd" data-kd="${esc(w.kind||'')}">${esc(w.kind||'')}</span>${(w.client||'').startsWith('HIDE')?`<a class="ig" href="${IG}" target="_blank" rel="noopener">See HIDE on Instagram ↗</a>`:''}</figcaption></figure>`;
 $('grid').innerHTML=WORK.filter(w=>w.h>=w.w).map(card).join('');
 $('films').innerHTML=WORK.filter(w=>w.w>w.h).map(card).join('');
@@ -1047,12 +1056,13 @@ function applyFilter(c){curCat=c;let n=0;
 showBtn.addEventListener('click',()=>{expanded=true;applyFilter(curCat)});
 applyFilter('all');
 /* preview videos: load + play only while visible; full files loop an 8 s window */
-function arm(v){const t=+v.dataset.t||0;v.src=v.dataset.src+(t?`#t=${t}`:'');if(v._armed)return;v._armed=1;
+function arm(v){const t=+v.dataset.t||0;if(!v._wall)v.classList.add('ld');v.src=v.dataset.src+(t?`#t=${t}`:'');if(v._armed)return;v._armed=1;
+ ['playing','error'].forEach(e=>v.addEventListener(e,()=>v.classList.remove('ld')));
  if(t){v.addEventListener('loadedmetadata',()=>{try{v.currentTime=t}catch(_){}});
   v.addEventListener('timeupdate',()=>{if(v.currentTime>t+8||v.currentTime<t-.5)v.currentTime=t})}}
 const vio='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;v._vis=e.isIntersecting;lastPick=0;
  if(!e.isIntersecting){v.pause();v.closest('.item')?.classList.remove('live')}}),{threshold:.3}):null;
-const wallVids=[...document.querySelectorAll('.wall video')];wallVids.forEach(v=>v._wall=true);
+const wallVids=[...document.querySelectorAll('.wall video')];wallVids.forEach(v=>{v._wall=true;if(PV){v.dataset.src=v.dataset.src.replace(/^full\//,'prev/');v.dataset.t=0}});
 const gridVids=[...document.querySelectorAll('.item video')],allVids=[...wallVids,...gridVids];let lastPick=0;
 /* only the few videos nearest the middle of the screen load and play (phone 2 + 3 in the hero, laptop 4 + the whole wall);
    the rest show their cover, and videos load only after 0.2 s near the middle (not while flicking past), and any video that stops playing is released after 3 s so memory stays low */
@@ -1064,10 +1074,10 @@ function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick
   if(on.has(v)){v._off=0;if(!v.src){if(!rich){if(!v._sel){v._sel=now;continue}if(now-v._sel<200)continue}arm(v)}
    if(v.paused){const p=v.play();if(p)p.catch(()=>{})}if(it)it.classList.add('live')}
   else{v._sel=0;if(!v.paused)v.pause();if(it)it.classList.remove('live');
-   if(v.src){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:3000)){v.removeAttribute('src');v.load();v._off=0}}}}}
+   if(v.src){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:3000)){v.removeAttribute('src');v.load();v.classList.remove('ld');v._off=0}}}}}
 document.querySelectorAll('.item video,.wall video').forEach(v=>vio?vio.observe(v):arm(v));
 /* covers: fetched only when a card is within ~3 screens, so the first load stays light */
-{const pv=[...document.querySelectorAll('.item video[data-poster]')],setP=v=>{if(!v.getAttribute('poster'))v.setAttribute('poster',v.dataset.poster)};
+{const pv=[...document.querySelectorAll('.item video[data-poster]')],setP=v=>{if(v.getAttribute('poster'))return;v.setAttribute('poster',v.dataset.poster);const a=v.closest('.vid');if(a)a.style.background=`#000 url(${v.dataset.poster}) center/cover no-repeat`};
  if('IntersectionObserver' in window){const po=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){setP(e.target);po.unobserve(e.target)}}),{rootMargin:'300% 150%'});pv.forEach(v=>po.observe(v));
  /* the swipeable films row clips its own cards, so load the whole row once it gets near */
  const fr=$('films');if(fr){const fo=new IntersectionObserver(es=>{if(es[0].isIntersecting){fo.disconnect();fr.querySelectorAll('video[data-poster]').forEach(setP)}},{rootMargin:'300% 0px'});fo.observe(fr)}}else pv.forEach(setP)}
@@ -1081,9 +1091,11 @@ if(fine&&!reduce)items.forEach(it=>{
  it.addEventListener('pointerleave',()=>{it.style.transform=''})});
 
 /* ---------- lightbox player ---------- */
-const lb=$('lb'),lbv=$('lbv'),bySlug=Object.fromEntries(WORK.map(w=>[w.slug,w]));let lbList=[],lbI=0,lastFocus=null,lbOpenNow=false;
-function lbShow(i){lbI=(i+lbList.length)%lbList.length;const w=lbList[lbI],col=bcol(w.client)||CATC[w.cat];
- lbv.classList.toggle('wide',w.w>w.h);lbv.poster=`work/${w.slug}.jpg`;lbv.src=fullSrc(w);lb.style.setProperty('--lbc',col);
+const lb=$('lb'),lbv=$('lbv'),bySlug=Object.fromEntries(WORK.map(w=>[w.slug,w]));
+const lbw=document.createElement('div'),lbp=document.createElement('img');lbw.className='lbw';lbp.className='lbp';lbp.alt='';lbp.setAttribute('aria-hidden','true');lbv.before(lbw);lbw.append(lbv,lbp);
+['playing','error'].forEach(e=>lbv.addEventListener(e,()=>lbw.classList.add('ok')));let lbList=[],lbI=0,lastFocus=null,lbOpenNow=false;
+function lbShow(i){lbI=(i+lbList.length)%lbList.length;lbw.classList.remove('ok');const w=lbList[lbI],col=bcol(w.client)||CATC[w.cat];
+ lbv.classList.toggle('wide',w.w>w.h);lbv.poster=lbp.src=`work/${w.slug}.jpg`;lbv.src=fullSrc(w);lb.style.setProperty('--lbc',col);
  const cl=lb.querySelector('.cl');cl.textContent=label(w);cl.style.color=col;lb.querySelector('.ti').textContent=w.title;lb.querySelector('.meta').textContent=meta(w);$('lbCount').textContent=`${lbI+1} / ${lbList.length}`;const ep=$('lbEp');ep.hidden=!w.ep;if(w.ep)ep.href=w.ep;
  const pr=lbv.play();if(pr)pr.catch(()=>{})}
 function lbOpen(w){lastFocus=document.activeElement;lbList=items.filter(it=>!it.hidden).map(it=>bySlug[it.dataset.slug]).filter(x=>FULL.has(x.slug));
@@ -1149,7 +1161,7 @@ if(!fine&&!reduce){
  addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')return;tOn=true;tx=tgx=e.clientX;ty=tgy=e.clientY},{passive:true});
  addEventListener('pointermove',e=>{if(e.pointerType==='touch'&&tOn){tx=e.clientX;ty=e.clientY}},{passive:true});
  ['pointerup','pointercancel'].forEach(n=>addEventListener(n,()=>tOn=false,{passive:true}));
- addEventListener('touchmove',e=>{const t=e.touches[0];if(t){tOn=true;tx=t.clientX;ty=t.clientY}},{passive:true});
+ addEventListener('touchmove',e=>{const t=e.touches[0];if(t&&Math.hypot(t.clientX-tgx,t.clientY-tgy)>14)tOn=false},{passive:true});
  addEventListener('touchend',()=>tOn=false,{passive:true});
  document.addEventListener('click',e=>{if(e.target.closest('.tab,.brief,.btn,.book,.copy,.nl,a.vid,.lb-x,.totop')&&navigator.vibrate){try{navigator.vibrate(8)}catch(_){}}});}
 

@@ -6,7 +6,8 @@ Static site, no build step. Deploy the repository root as is (Netlify: publish d
 
 - `index.html`: the whole site (English and Arabic, open with `#ar` for Arabic)
 - `frames/`: scroll-story frames (old house to sold)
-- `full/`: the 100 portfolio videos
+- `full/`: the 100 portfolio videos (played in the player, and as card loops on laptops)
+- `prev/`: light 6 s previews of each video, looped on the cards and hero wall on phones
 - `work/`: video covers
 - `img/`: logo
 - `_headers`: Netlify caching headers
