@@ -174,7 +174,7 @@ h2{font-size:clamp(38px,6.4vw,80px);line-height:.98;margin:14px 0 18px}
 @media (min-width:900px){.headline{min-height:1.1em}.headline br{display:none}}
 .headline span{color:var(--c);text-shadow:0 0 34px color-mix(in srgb,var(--c) 60%,transparent)}
 .headline.pop{animation:pop .55s var(--eo)}
-@keyframes pop{from{opacity:0;filter:blur(14px);transform:scale(1.12) translateY(6px)}to{opacity:1;filter:none;transform:none}}
+@keyframes pop{from{opacity:.45;transform:translateY(5px)}to{opacity:1;transform:none}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px -20px var(--accent)}
 .ph{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);font:600 13px var(--display)}
 .ph .x{color:var(--muted)}
@@ -655,6 +655,12 @@ html:not(.rich) .steps li::before{animation-name:nodeL;box-shadow:0 0 14px color
 .lbw{position:relative;display:block}
 .lbp{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:16px;background:#000;pointer-events:none;transition:opacity .35s ease}
 .lbw.ok .lbp{opacity:0}
+/* no glitchy disappearing: */
+.headline.pop{animation:pop .4s var(--eo)}
+[data-sec] .switch i{animation-play-state:running!important}
+.biglogo .gl{display:none}
+html:not(.rich) .mq .bw{background:none;color:var(--bc);-webkit-text-fill-color:var(--bc);filter:none;text-shadow:0 0 14px color-mix(in srgb,var(--bc) 45%,transparent)}
+html:not(.rich) .sh{background:none;color:var(--accent);-webkit-text-fill-color:var(--accent);filter:none;text-shadow:0 0 22px color-mix(in srgb,var(--accent) 55%,transparent)}
 </style>
 
 <div class="aurora" aria-hidden="true"></div>
@@ -1074,7 +1080,7 @@ function pickPlaying(now){if(now-lastPick<220||lbOpenNow||reduce)return;lastPick
   if(on.has(v)){v._off=0;if(!v.src){if(!rich){if(!v._sel){v._sel=now;continue}if(now-v._sel<200)continue}arm(v)}
    if(v.paused){const p=v.play();if(p)p.catch(()=>{})}if(it)it.classList.add('live')}
   else{v._sel=0;if(!v.paused)v.pause();if(it)it.classList.remove('live');
-   if(v.src){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:3000)){v.removeAttribute('src');v.load();v.classList.remove('ld');v._off=0}}}}}
+   if(v.src&&!(v._wall&&lite)){if(!v._off)v._off=now;else if(now-v._off>(rich?15000:8000)){if(!v._wall)v.classList.add('ld');v.removeAttribute('src');v.load();v._off=0}}}}}
 document.querySelectorAll('.item video,.wall video').forEach(v=>vio?vio.observe(v):arm(v));
 /* covers: fetched only when a card is within ~3 screens, so the first load stays light */
 {const pv=[...document.querySelectorAll('.item video[data-poster]')],setP=v=>{if(v.getAttribute('poster'))return;v.setAttribute('poster',v.dataset.poster);const a=v.closest('.vid');if(a)a.style.background=`#000 url(${v.dataset.poster}) center/cover no-repeat`};
@@ -1122,12 +1128,12 @@ function setWord(i){const[w,c]=(lang==='ar'?WORDS_AR:WORDS)[i];sw.style.setPrope
  const parts=lang==='ar'?w.split(' ').map((x,k,a)=>x+(k<a.length-1?' ':'')):[...w];
  sw.innerHTML=parts.map((ch,k)=>`<i style="--d:${k*(lang==='ar'?90:32)}ms">${ch===' '?'&nbsp;':esc(ch).replace(/ $/,'&nbsp;')}</i>`).join('')}
 setWord(0);
-if(!reduce)setInterval(()=>{wi=(wi+1)%WORDS.length;setWord(wi)},2400);
+if(!reduce)setInterval(()=>{const r=sw.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;wi=(wi+1)%WORDS.length;setWord(wi)},2400);
 
 /* ---------- reveal on scroll ---------- */
 const rv=[...document.querySelectorAll('[data-reveal]'),...items];
 const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');rio.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
-if(!reduce)rv.forEach((el,i)=>{if(el.getBoundingClientRect().top>innerHeight*.95){el.classList.add('pre');if(el.classList.contains('item')){const d=(items.indexOf(el)%4)*80+'ms';el.style.transitionDelay=d;el.style.setProperty('--sd',d)}rio.observe(el)}});
+if(!reduce)rv.forEach((el,i)=>{if(!el.closest('.films')&&el.getBoundingClientRect().top>innerHeight*.95){el.classList.add('pre');if(el.classList.contains('item')){const d=(items.indexOf(el)%4)*80+'ms';el.style.transitionDelay=d;el.style.setProperty('--sd',d)}rio.observe(el)}});
 items.forEach(it=>it.addEventListener('transitionend',e=>{if(e.propertyName==='opacity')it.style.transitionDelay=''}));
 
 /* ---------- book: logo sting when it comes into view ---------- */
