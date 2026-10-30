@@ -7,3 +7,5 @@
   Cache-Control: public, max-age=604800
 /frames/*
   Cache-Control: public, max-age=604800
+/prev/*
+  Cache-Control: public, max-age=604800
